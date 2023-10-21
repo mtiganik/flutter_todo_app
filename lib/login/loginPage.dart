@@ -1,6 +1,8 @@
 
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/login/emailTextInput.dart';
+import 'package:flutter_todo_app/login/passwordTextInput.dart';
 
 class LoginPage extends StatelessWidget{
   const LoginPage({super.key});
@@ -23,8 +25,26 @@ class LoginPage extends StatelessWidget{
 }
 
 
-class LoginPageBox extends StatelessWidget{
+class LoginPageBox extends StatefulWidget{
   const LoginPageBox({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _LoginPageBoxState();
+}
+
+class _LoginPageBoxState extends State<LoginPageBox>{
+  String email = '';
+  String password = '';
+void handleEmailChanged(String newEmail){
+  setState(() {
+    email = newEmail;
+  });
+}
+void handlePasswordChange(String newPassword){
+  setState(() {
+    password = newPassword;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -36,80 +56,19 @@ class LoginPageBox extends StatelessWidget{
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.all(35.0),
 
-      child: const Column(
+      child:  Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-       Text("Logi666fdsn123"),
-        Text("Enter email"),
-        Text("Enter passwordfdsfdsfsd")
+       const Text("Login", style: GoogleFonts.lato(),),
+       EmailTextInput(labelText: "Email", onEmailChanged: handleEmailChanged),
+       PasswordTextInput(labelText: "Password", onPasswordChanged: handlePasswordChange),
+
+        Text("Enter entered: $email"),
+        const Text("Enter password")
       ]
 
     ));
   }
+  
 }
 
-
-class EmailTextInput extends StatefulWidget {
-  const EmailTextInput({super.key, required this.labelText, required this.onEmailChanged});
-
-  final String labelText;
-  final Function(String) onEmailChanged;
-
-
-  @override
-  State<EmailTextInput> createState() => _EmailTextInputState();
-}
-
-class _EmailTextInputState extends State<EmailTextInput> {
-  final emailController = TextEditingController();
-  bool isEmailValid = true;
-
-  @override
-  void initState() {
-    super.initState();
-    emailController.addListener(() {
-      final email = emailController.text;
-      final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-      final isValid = emailRegex.hasMatch(email);
-      if (!isValid) {
-        setState(() {
-          isEmailValid = false;
-        });
-      } else {
-        setState(() {
-          isEmailValid = true;
-        });
-      }
-      widget.onEmailChanged(email);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.labelText,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        TextField(
-          controller: emailController,
-          decoration: InputDecoration(
-            hintText: 'Enter your email',
-            errorText: isEmailValid ? null : 'Invalid email format',
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    super.dispose();
-  }
-}
