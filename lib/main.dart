@@ -16,17 +16,8 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true
       ),
-      home:  Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-
-          title: const Text("Todo App", style: TextStyle(color: Colors.white)),
-        ),
-        body: const
-           LoginPage(),
-        
-      ),
-    );
+      home:  const LoginPage()
+    );   
   }
 }
 

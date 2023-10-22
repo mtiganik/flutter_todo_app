@@ -9,7 +9,13 @@ class LoginPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+
+          title: const Text("Login", style: TextStyle(color: Colors.white)),
+        ),
+        body: Container(
         width: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -20,7 +26,7 @@ class LoginPage extends StatelessWidget{
         
       ),
       child: const LoginPageBox()
-    );
+    ));
   }
 }
 
