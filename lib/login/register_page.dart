@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/login/login_page.dart';
+import 'package:flutter_todo_app/login/page_navigation.dart';
 
 class RegisterPage extends StatelessWidget{
   const RegisterPage({super.key});
@@ -15,26 +16,54 @@ class RegisterPage extends StatelessWidget{
       ),
       body: 
       
-      Center(
-        child: Column(
-      children:  <Widget>[
-      const Text("In register page"),
+      SingleChildScrollView(
+        
+        child: Container(
+          width: double.infinity,
 
-      InkWell(
-        onTap: (){
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const LoginPage()
-            ));
-        },child: const Text(
-          "Have account? Login instead", 
-          style: TextStyle(
-            color: Colors.blue,
-            decoration: TextDecoration.underline
-          )
-        )
-      )
-      ]
+          decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.red, Colors.white],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter
+        ),
+      ),
+
+        
+        child: const RegisterPageBox()
+      
       )));
+  }
+}
+
+class RegisterPageBox extends StatefulWidget{
+  const RegisterPageBox({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _RegisterPageBoxState();
+  
+}
+
+class _RegisterPageBoxState extends State<RegisterPageBox>{
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(20.0)
+      ),
+      padding: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(35.0),
+
+      child: const Column(
+      children:  <Widget>[
+       Text("In register page"),
+      PageNavigation(title: "Have account? Login instead", targetPage: LoginPage(),)
+ 
+      ]
+      ));
+
+
   }
 
 }

@@ -1,6 +1,7 @@
 
+import 'package:flutter_todo_app/login/login_header.dart';
+import 'package:flutter_todo_app/login/page_navigation.dart';
 import 'package:flutter_todo_app/login/register_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/login/email_text_input.dart';
 import 'package:flutter_todo_app/login/password_text_input.dart';
@@ -66,12 +67,7 @@ void handleLoginPressed(){
 
   @override
   Widget build(BuildContext context) {
-    return       
-           
-
-          
-
-    Container(
+    return  Container(
       decoration:  BoxDecoration(
         color: Colors.white.withOpacity(0.5),
         borderRadius: BorderRadius.circular(20.0),
@@ -90,38 +86,9 @@ void handleLoginPressed(){
         ElevatedButton(onPressed: handleLoginPressed, 
         child: const Text("Login")),
         Text("Enter entered: $email"),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const RegisterPage(),
-              ));
-          },
-          child: const Text(
-            "Dont have account? Register here",
-            style: TextStyle(
-              color: Colors.blue,
-              decoration: TextDecoration.underline
-            )
-          )
-        )
+        const PageNavigation(title: "Register new account", targetPage: RegisterPage())
       ]
     ));
   }
 }
 
-class LoginHeader extends StatelessWidget{
-  const LoginHeader({super.key, required this.title});
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(title, style: GoogleFonts.kalam(
-        textStyle: const TextStyle(
-        height: 2,
-        fontSize: 30,
-        )
-       ));
-
-  }
-
-}
