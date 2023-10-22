@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/login/login_page.dart';
+import 'package:flutter_todo_app/login/register_page.dart';
 
 void main() {
   runApp(const MainApp());

@@ -34,7 +34,9 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Container(
+      padding: const EdgeInsets.fromLTRB(0,15,0,15),
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -68,7 +70,7 @@ class _PasswordTextInputState extends State<PasswordTextInput> {
           ],
         ),
       ],
-    );
+    ));
   }
 
   @override
