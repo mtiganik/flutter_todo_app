@@ -48,7 +48,6 @@ class _PasswordConfirmPasswordState extends State<PasswordConfirmPassword>{
     });
 
     confirmPasswordFocusNode.addListener(() {
-      print("In confirm pw focus node");
       if(passwordController.text == confirmPasswordController.text){
         setState(() {
           isValidConfirmPassword = true;

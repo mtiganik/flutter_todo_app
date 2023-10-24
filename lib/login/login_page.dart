@@ -1,4 +1,5 @@
 
+import 'package:flutter_todo_app/login/login_button.dart';
 import 'package:flutter_todo_app/login/login_header.dart';
 import 'package:flutter_todo_app/login/page_navigation.dart';
 import 'package:flutter_todo_app/login/register_page.dart';
@@ -62,6 +63,7 @@ void handlePasswordChange(String newPassword){
 }
 
 void handleLoginPressed(){
+  print("Pressed login");
   print("$email $password");
 }
 
@@ -83,8 +85,8 @@ void handleLoginPressed(){
        const LoginHeader(title: "Login",),
        EmailTextInput(labelText: "Email", onEmailChanged: handleEmailChanged),
        PasswordTextInput(labelText: "Password", onPasswordChanged: handlePasswordChange),
-        ElevatedButton(onPressed: handleLoginPressed, 
-        child: const Text("Login")),
+       LoginButton(label: "Login", onPressed: handleLoginPressed),
+
         Text("Enter entered: $email"),
         const PageNavigation(title: "Register new account", targetPage: RegisterPage())
       ]
