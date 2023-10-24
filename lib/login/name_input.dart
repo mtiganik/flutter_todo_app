@@ -29,18 +29,24 @@ void initState(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
           widget.label,
           style: const TextStyle(
             fontSize: 16,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
           ),
-        ),
-        TextField(
+        )),
+         TextField(
           controller: nameController,
+          
           onChanged: widget.onInputChanged,
+          
           decoration: InputDecoration(
             hintText: 'Enter ${widget.label}',
+            contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+            
           )
         )
       ],
