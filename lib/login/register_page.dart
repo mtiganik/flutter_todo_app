@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/login/email_text_input.dart';
+import 'package:flutter_todo_app/login/login_button.dart';
 import 'package:flutter_todo_app/login/login_header.dart';
 import 'package:flutter_todo_app/login/login_page.dart';
 import 'package:flutter_todo_app/login/name_input.dart';
@@ -84,6 +85,10 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
       confirmPassword = newConfirmPassword;
     });
   }
+
+  void handleRegister (){
+
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -101,7 +106,7 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
       NameInput(label: "Last Name", onInputChanged: handleLastnameChanged),
       EmailTextInput(labelText: "Email", onEmailChanged: handleEmailChanged),
       PasswordConfirmPassword(labelText: "Password", onPasswordChanged: handlePassWordChanged,onConfirmPasswordChanged: handleConfirmPasswordChanged),
-
+      LoginButton(label: "Register", onPressed: handleRegister),
       const PageNavigation(title: "Have account? Login instead", targetPage: LoginPage(),)
  
       ]

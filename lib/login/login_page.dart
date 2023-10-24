@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter_todo_app/login/login_button.dart';
 import 'package:flutter_todo_app/login/login_header.dart';
 import 'package:flutter_todo_app/login/page_navigation.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_todo_app/login/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/login/email_text_input.dart';
 import 'package:flutter_todo_app/login/password_text_input.dart';
+import 'package:flutter_todo_app/models/user.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget{
   const LoginPage({super.key});
@@ -62,9 +66,10 @@ void handlePasswordChange(String newPassword){
   });
 }
 
-void handleLoginPressed(){
+void handleLoginPressed ()async{
+  User user = await loginUser(email = "aaa@bbb.eeq", password="q1w2E+");
   print("Pressed login");
-  print("$email $password");
+  print(user.token);
 }
 
   @override
@@ -93,4 +98,38 @@ void handleLoginPressed(){
     ));
   }
 }
+
+
+
+Future<User> loginUser(String email, String password) async {
+  final url = Uri.parse("https://taltech.akaver.com/api/v1/Account/Login");
+  
+  final response = await http.post(
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode({
+      "email": email,
+      "password": password,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    // Request was successful
+    // final responseData = jsonDecode(response.body);
+    // print("Login successful: $responseData");
+    var user = User.fromJson(json.decode(response.body));
+    return user;
+  } else {
+    // Request failed
+    print("Login failed: ${response.reasonPhrase}");
+    throw Exception('Failed to login');
+  }
+}
+
+
+
+
+
 
