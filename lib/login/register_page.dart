@@ -101,6 +101,7 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
       NameInput(label: "Last Name", onInputChanged: handleLastnameChanged),
       EmailTextInput(labelText: "Email", onEmailChanged: handleEmailChanged),
       PasswordConfirmPassword(labelText: "Password", onPasswordChanged: handlePassWordChanged,onConfirmPasswordChanged: handleConfirmPasswordChanged),
+
       const PageNavigation(title: "Have account? Login instead", targetPage: LoginPage(),)
  
       ]

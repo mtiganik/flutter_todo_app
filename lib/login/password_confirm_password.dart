@@ -16,24 +16,52 @@ class _PasswordConfirmPasswordState extends State<PasswordConfirmPassword>{
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final passwordFocusNode = FocusNode();
+  final confirmPasswordFocusNode = FocusNode();
   bool isPasswordVisible = false;
-  String passwordError = 'pwError';
-
+  bool isValidPassword = true;
+  bool isValidConfirmPassword = true;
   @override
   void initState(){
     super.initState();
-    passwordController.addListener(() { 
-      widget.onPasswordChanged(passwordController.text);
+    passwordController.addListener(() {
+        widget.onPasswordChanged(passwordController.text);
     });
 
     confirmPasswordController.addListener(() {
         widget.onConfirmPasswordChanged(confirmPasswordController.text);
-      // if (isValidPassword(confirmPasswordController.text)) {
-      // }
-      // else {
-      //   passwordError = "Password must be 6 letters long, contain uppercase, lowercase letter, a number and a special character";
-      // }
-    });}
+    });
+
+    passwordFocusNode.addListener(() {
+      if(!passwordFocusNode.hasFocus){
+        final currPw = passwordController.text;
+        final isValid = validatePassword(currPw);
+        if(isValid){
+          setState(() {
+            isValidPassword = true;
+          });
+        }else {
+          setState(() {
+            isValidPassword = false;
+          });
+        }
+      }
+    });
+
+    confirmPasswordFocusNode.addListener(() {
+      print("In confirm pw focus node");
+      if(passwordController.text == confirmPasswordController.text){
+        setState(() {
+          isValidConfirmPassword = true;
+        });
+      }else{
+        setState(() {
+          isValidConfirmPassword = false;
+        });
+      }
+    });
+
+    }
+
 
     void togglePasswordVisibility(){
       setState((){
@@ -42,12 +70,12 @@ class _PasswordConfirmPasswordState extends State<PasswordConfirmPassword>{
     }
 
     
-    bool isValidPassword(String password) {
+    bool validatePassword(String password) {
     return password.length >= 6 &&
         password.contains(RegExp(r'[A-Z]')) &&
         password.contains(RegExp(r'[a-z]')) &&
         password.contains(RegExp(r'[0-9]')) &&
-        password.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'));
+        password.contains(RegExp(r'[!@#\$%^&*()+,.?":{}|<>]'));
   }
 
 
@@ -70,8 +98,9 @@ class _PasswordConfirmPasswordState extends State<PasswordConfirmPassword>{
               controller: passwordController,
               focusNode: passwordFocusNode,
               obscureText: !isPasswordVisible,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Enter your password',
+                errorText: isValidPassword ? null : "upper/lowercase letter, number and special character needed",
               ),
             ),
             GestureDetector(
@@ -89,9 +118,11 @@ class _PasswordConfirmPasswordState extends State<PasswordConfirmPassword>{
         const SizedBox(height: 10,),
         TextField(
           controller: confirmPasswordController,
+          focusNode: confirmPasswordFocusNode,
           obscureText: !isPasswordVisible,
-          decoration: const InputDecoration(
-            hintText: 'Confirm your password'
+          decoration: InputDecoration(
+            hintText: 'Confirm your password',
+            errorText: isValidConfirmPassword ? null : "Confirm must match password",
           ),
         ),
       ]
