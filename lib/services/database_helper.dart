@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static const _databaseName = "todo_database.db";
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 2;
   static Database? _database;
 
   // Singleton pattern for database access
@@ -25,9 +25,19 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    print("Start of onCreate");
     await db.execute(
-      'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)'
+      '''CREATE TABLE User(id INTEGER PRIMARY KEY, token TEXT, refreshToken TEXT, firstName TEXT, lastName TEXT)'''
     );
+    await db.execute(
+      '''CREATE TABLE Category(id TEXT PRIMARY KEY, categoryName TEXT, categorySort INTEGER, syncDt INTEGER)'''
+    );
+    await db.execute(
+        '''CREATE TABLE Priority(id TEXT PRIMARY KEY, priorityName TEXT, prioritySort INTEGER, syncDt INTEGER)'''
+);
+    print("End of onCreate");
+
+
   }
 
   Future<Database> get database async {
@@ -37,4 +47,11 @@ class DatabaseHelper {
     _database = await initDatabase();
     return _database!;
   }
+
+  Future<void> deleteDb() async {
+  final databasesPath = await getDatabasesPath();
+  final path = join(databasesPath, _databaseName);
+  await deleteDatabase(path);
+}
+
 }

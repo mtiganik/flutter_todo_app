@@ -10,7 +10,6 @@ class User{
   required this.firstName, required this.lastName});
 
   factory User.fromJson(Map<String, dynamic> json){
-    // var fetchData = json[0];
     return User(
       token: json['token'],
       refreshToken: json['refreshToken'],
@@ -18,4 +17,11 @@ class User{
       lastName: json['lastName'],
     );
   }
+
+  Map<String,dynamic> toJson() => {
+    'token': token,
+    'refreshToken':refreshToken,
+    'firstName':firstName,
+    'lastName':lastName
+  };
 }
