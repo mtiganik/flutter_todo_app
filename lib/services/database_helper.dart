@@ -33,8 +33,10 @@ class DatabaseHelper {
       '''CREATE TABLE Category(id TEXT PRIMARY KEY, categoryName TEXT, categorySort INTEGER, syncDt INTEGER)'''
     );
     await db.execute(
-        '''CREATE TABLE Priority(id TEXT PRIMARY KEY, priorityName TEXT, prioritySort INTEGER, syncDt INTEGER)'''
-);
+        '''CREATE TABLE Priority(id TEXT PRIMARY KEY, priorityName TEXT, prioritySort INTEGER, syncDt INTEGER)''');
+    await db.execute(
+        '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, dueDt INTEGER, 
+  isCompleted BOOLEAN, isArchived BOOLEAN, FOREIGN KEY(todoCategoryId) REFERENCES Category(id), FOREIGN KEY(todoPriorityId) REFERENCES Priority(id)''');
     print("End of onCreate");
 
 

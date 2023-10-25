@@ -20,12 +20,6 @@ class UserService{
     conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-    static Future<int> deleteUser(User user) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
-    return await db.delete("User", where: 'firstName = ?', whereArgs: [user.firstName]
-    );
-  }
 
   static Future<List<User>?> getAllUser() async{
     DatabaseHelper dbHelper = DatabaseHelper();
@@ -35,6 +29,12 @@ class UserService{
       return null;
     }
     return List.generate(maps.length, (index) => User.fromJson(maps[index]));
+  }
+    static Future<int> deleteUser(User user) async{
+    DatabaseHelper dbHelper = DatabaseHelper();
+    Database db = await dbHelper.database;
+    return await db.delete("User", where: 'firstName = ?', whereArgs: [user.firstName]
+    );
   }
 
 }
