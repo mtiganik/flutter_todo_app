@@ -3,7 +3,7 @@
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'database_helper.dart';
+import '../db/database_helper.dart';
 
 class CategoryService {
 

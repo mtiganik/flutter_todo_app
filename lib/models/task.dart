@@ -3,13 +3,13 @@ class Task{
   final String id;
   final String taskName;
   final int? taskSort;
-  final int? createdDt;
-  final int? dueDt;
+  final DateTime? createdDt;
+  final DateTime? dueDt;
   final bool isCompleted;
   final bool? isArchieved;
   final String categoryId;
   final String priorityId;
-  final int? syncDt;
+  final DateTime? syncDt;
 
   Task({
     required this.id,
@@ -17,25 +17,27 @@ class Task{
     required this.isCompleted,
     required this.categoryId,
     required this.priorityId,
-    this.createdDt,
-    this.dueDt,
+    DateTime? createdDt,
+    DateTime? dueDt,
+    DateTime? syncDt,
     this.isArchieved,
-    this.syncDt,
     this.taskSort
-  });
+  }) : createdDt = createdDt ?? DateTime.now(),
+  syncDt = syncDt ?? DateTime.now(),
+  dueDt = dueDt ?? DateTime.now().add(Duration(days: 14 + DateTime.now().second % 7));
 
   factory Task.fromJson(Map<String, dynamic> json){
     return Task(
       id: json['id'],
       taskName: json['taskName'],
       taskSort: json['taskSort'],
-      createdDt: json['createdDt'],
-      dueDt: json['dueDt'],
+      createdDt: DateTime.fromMillisecondsSinceEpoch(json['createdDt']),
+      dueDt: DateTime.fromMillisecondsSinceEpoch(json['dueDt']),
       isCompleted: json['isCompleted'],
       isArchieved: json['isArchieved'],
       categoryId: json['categoryId'],
       priorityId: json['priorityId'],
-      syncDt: json['syncDt']
+      syncDt: DateTime.fromMillisecondsSinceEpoch(json['syncDt'])
     );
   }
 
@@ -44,13 +46,13 @@ class Task{
       'id': id,
       'taskName': taskName,
       'taskSort': taskSort,
-      'createdDt': createdDt,
-      'dueDt': dueDt,
+      'createdDt': createdDt?.millisecondsSinceEpoch,
+      'dueDt': dueDt?.millisecondsSinceEpoch,
       'isCompleted': isCompleted,
       'isArchieved': isArchieved,
       'categoryId':categoryId,
       'priorityId':priorityId,
-      'syncDt':syncDt
+      'syncDt':syncDt?.millisecondsSinceEpoch,
     };
   }
 

@@ -4,15 +4,16 @@ class Category{
   final String categoryName;
   final int categorySort;
   final DateTime? syncDt;
-
-  Category({required this.id, required this.categoryName, required this.categorySort, this.syncDt});
+  
+  Category({required this.id, required this.categoryName, required this.categorySort, DateTime? syncDt}) : syncDt = syncDt ?? DateTime.now();
+  
 
   factory Category.fromJson(Map<String, dynamic> json){
     return Category(
       id: json['id'],
       categoryName: json['categoryName'],
       categorySort: json['categorySort'],
-      syncDt: json['syncDt'],
+      syncDt: DateTime.fromMillisecondsSinceEpoch(json['syncDt']),
     );
   }
 
@@ -20,7 +21,6 @@ class Category{
     'id': id,
     'categoryName':categoryName,
     'categorySort':categorySort,
-    'syncDt':syncDt
+    'syncDt':syncDt?.millisecondsSinceEpoch
   };
-
 }

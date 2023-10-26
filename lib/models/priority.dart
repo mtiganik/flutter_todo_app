@@ -7,15 +7,14 @@ class Priority{
   final DateTime? syncDt;
 
   Priority({required this.id, 
-  required this.priorityName, required this.prioritySort,
-  this.syncDt});
+  required this.priorityName, required this.prioritySort, DateTime? syncDt }) : syncDt =syncDt?? DateTime.now();
 
   factory Priority.fromJson(Map<String, dynamic> json){
     return Priority(
       id: json['id'],
       priorityName: json['priorityName'],
       prioritySort: json['prioritySort'],
-      syncDt: json['syncDt']
+      syncDt: DateTime.fromMillisecondsSinceEpoch(json['syncDt'])
     );
   }
 
@@ -23,6 +22,6 @@ class Priority{
     'id' : id,
     'priorityName' : priorityName,
     'prioritySort' : prioritySort,
-    'syncDt' : syncDt
+    'syncDt' : syncDt?.millisecondsSinceEpoch,
    };
 }

@@ -3,11 +3,10 @@
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' hide Priority;
-import 'package:flutter_todo_app/db_debug/dog.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/user.dart';
-import 'package:flutter_todo_app/services/database_helper.dart';
+import 'package:flutter_todo_app/db/database_helper.dart';
 import 'package:flutter_todo_app/services/user_service.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
