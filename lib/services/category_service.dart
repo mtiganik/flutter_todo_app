@@ -44,7 +44,8 @@ class CategoryService {
     DatabaseHelper dbHelper = DatabaseHelper();
     Database db = await dbHelper.database;
 
-    return await db.update("Category", category.toJson(), where: 'id = ?', whereArgs: [category.id],
+    return await db.update("Category", category.toJson(), 
+    where: 'id = ?', whereArgs: [category.id],
     conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
