@@ -1,9 +1,10 @@
+import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static const _databaseName = "todo_database.db";
-  static const _databaseVersion = 2;
+  static const _databaseName = "todo_database2.db";
+  static const _databaseVersion = 1;
   static Database? _database;
 
   // Singleton pattern for database access
@@ -34,12 +35,18 @@ class DatabaseHelper {
     );
     await db.execute(
         '''CREATE TABLE Priority(id TEXT PRIMARY KEY, priorityName TEXT, prioritySort INTEGER, syncDt INTEGER)''');
+
     await db.execute(
-        '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, dueDt INTEGER, 
-  isCompleted BOOLEAN, isArchived BOOLEAN, FOREIGN KEY(todoCategoryId) REFERENCES Category(id), FOREIGN KEY(todoPriorityId) REFERENCES Priority(id)''');
+        '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, 
+        dueDt INTEGER, isCompleted BOOLEAN, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT, 
+        FOREIGN KEY(todoCategoryId) REFERENCES Category(id), FOREIGN KEY(todoPriorityId) REFERENCES Priority(id))''');
+    // await db.execute(
+    //     '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, dueDt INTEGER, isCompleted BOOLEAN, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT)''');
+
+    // await InitialDbValues.addCategories();
+    // await InitialDbValues.addPriorities();
+    // await InitialDbValues.addTask();
     print("End of onCreate");
-
-
   }
 
   Future<Database> get database async {
@@ -55,5 +62,15 @@ class DatabaseHelper {
   final path = join(databasesPath, _databaseName);
   await deleteDatabase(path);
 }
+
+  Future<List<String>?> getAllTableNames() async {
+    final db = await database;
+    final result = await db.rawQuery("SELECT name FROM sqlite_master WHERE type='table';");
+    if (result.isNotEmpty) {
+      return result.map((row) => row['name'] as String).toList();
+    }
+    return null; // No tables found
+  }
+
 
 }

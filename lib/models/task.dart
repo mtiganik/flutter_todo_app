@@ -58,6 +58,6 @@ class Task{
 
   @override
   String toString() {
-    return '{id: $id, taskname: $taskName, categoryId: $categoryId, priorityId: $priorityId}';
+    return 'Task: {id: $id, taskname: $taskName, categoryId: $categoryId, priorityId: $priorityId}, dueDt: $dueDt}';
   }
 }

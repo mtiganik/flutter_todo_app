@@ -24,4 +24,9 @@ class Priority{
     'prioritySort' : prioritySort,
     'syncDt' : syncDt?.millisecondsSinceEpoch,
    };
+
+   @override
+   String toString(){
+    return 'priority: {priorityName: $priorityName, id: $id, syncDt: $syncDt}';
+   }
 }

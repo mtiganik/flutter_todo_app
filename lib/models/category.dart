@@ -23,4 +23,9 @@ class Category{
     'categorySort':categorySort,
     'syncDt':syncDt?.millisecondsSinceEpoch
   };
+
+  @override
+  String toString() {
+    return "category: {name: $categoryName, id: $id, syncDt; $syncDt}";
+  }
 }

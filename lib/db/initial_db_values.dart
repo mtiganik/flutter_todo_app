@@ -3,6 +3,8 @@ import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/task.dart';
 import 'package:flutter_todo_app/services/category_service.dart';
+import 'package:flutter_todo_app/services/priority_service.dart';
+import 'package:flutter_todo_app/services/task_service.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -46,6 +48,20 @@ static final _category_4uuid = _uuid.v4();
   static Future<int> addCategories()async{
     for(Category cat in _categories){
       await CategoryService.addCategory(cat);
+    }
+    return 1;
+  }
+
+  static Future<int> addPriorities() async{
+    for(Priority pri in _priorities){
+      await PriorityService.addPriority(pri);
+    }
+    return 1;
+  }
+
+  static Future<int> addTask() async{
+    for(Task task in _tasks){
+      await TaskService.addTask(task);
     }
     return 1;
   }
