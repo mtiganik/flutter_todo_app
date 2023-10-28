@@ -6,22 +6,22 @@ class Task{
   final DateTime? createdDt;
   final DateTime? dueDt;
   final bool isCompleted;
-  final bool? isArchieved;
-  final String categoryId;
-  final String priorityId;
+  final bool? isArchived;
+  final String todoCategoryId;
+  final String todoPriorityId;
   final DateTime? syncDt;
 
   Task({
     required this.id,
     required this.taskName,
     required this.isCompleted,
-    required this.categoryId,
-    required this.priorityId,
+    required this.todoCategoryId,
+    required this.todoPriorityId,
     DateTime? createdDt,
     DateTime? dueDt,
     DateTime? syncDt,
-    this.isArchieved,
-    this.taskSort
+    this.isArchived = false,
+    this.taskSort = 0,
   }) : createdDt = createdDt ?? DateTime.now(),
   syncDt = syncDt ?? DateTime.now(),
   dueDt = dueDt ?? DateTime.now().add(Duration(days: 14 + DateTime.now().second % 7));
@@ -33,10 +33,10 @@ class Task{
       taskSort: json['taskSort'],
       createdDt: DateTime.fromMillisecondsSinceEpoch(json['createdDt']),
       dueDt: DateTime.fromMillisecondsSinceEpoch(json['dueDt']),
-      isCompleted: json['isCompleted'],
-      isArchieved: json['isArchieved'],
-      categoryId: json['categoryId'],
-      priorityId: json['priorityId'],
+      isCompleted: json['isCompleted'] == 0 ? false: true,
+      isArchived: json['isArchived'] == 0 ? false: true,
+      todoCategoryId: json['todoCategoryId'],
+      todoPriorityId: json['todoPriorityId'],
       syncDt: DateTime.fromMillisecondsSinceEpoch(json['syncDt'])
     );
   }
@@ -49,15 +49,15 @@ class Task{
       'createdDt': createdDt?.millisecondsSinceEpoch,
       'dueDt': dueDt?.millisecondsSinceEpoch,
       'isCompleted': isCompleted,
-      'isArchieved': isArchieved,
-      'categoryId':categoryId,
-      'priorityId':priorityId,
+      'isArchived': isArchived,
+      'todoCategoryId':todoCategoryId,
+      'todoPriorityId':todoPriorityId,
       'syncDt':syncDt?.millisecondsSinceEpoch,
     };
   }
 
   @override
   String toString() {
-    return 'Task: {id: $id, taskname: $taskName, categoryId: $categoryId, priorityId: $priorityId}, dueDt: $dueDt}';
+    return 'Task: {id: $id, taskname: $taskName, categoryId: $todoCategoryId, priorityId: $todoPriorityId}, dueDt: $dueDt}';
   }
 }

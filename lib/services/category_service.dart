@@ -8,8 +8,7 @@ import '../db/database_helper.dart';
 class CategoryService {
 
   static Future<Category?> getCategoryById(String categoryId) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     final List<Map<String, dynamic>> maps = await 
     db.query('Category', where: 'id = ?', whereArgs: [categoryId]);
@@ -20,8 +19,7 @@ class CategoryService {
   }
 
   static Future<List<Category>?> getAllCategories() async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     final List<Map<String,dynamic>> maps = await db.query("Category");
     if(maps.isEmpty){
@@ -33,16 +31,14 @@ class CategoryService {
 
 
   static Future<int> addCategory(Category category) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     return await db.insert("Category", category.toJson(),
     conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   static Future<int> updateCategory(Category category) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     return await db.update("Category", category.toJson(), 
     where: 'id = ?', whereArgs: [category.id],
@@ -50,8 +46,7 @@ class CategoryService {
   }
 
   static Future<int> deleteCategory(Category category) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     return await db.delete("Category", where: "id = ?", whereArgs: [category.id]);
   }

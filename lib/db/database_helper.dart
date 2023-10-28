@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static const _databaseName = "todo_database2.db";
+  static const _databaseName = "todo_database3.db";
   static const _databaseVersion = 1;
   static Database? _database;
 
@@ -38,7 +38,7 @@ class DatabaseHelper {
 
     await db.execute(
         '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, 
-        dueDt INTEGER, isCompleted BOOLEAN, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT, 
+        dueDt INTEGER, isCompleted BOOLEAN, syncDt INTEGER, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT, 
         FOREIGN KEY(todoCategoryId) REFERENCES Category(id), FOREIGN KEY(todoPriorityId) REFERENCES Priority(id))''');
     // await db.execute(
     //     '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, dueDt INTEGER, isCompleted BOOLEAN, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT)''');

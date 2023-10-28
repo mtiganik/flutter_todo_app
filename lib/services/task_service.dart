@@ -7,8 +7,7 @@ import 'package:sqflite/sqflite.dart';
 class TaskService{
 
   static Future<Task?> getTaskById(String taskId) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     final List<Map<String, dynamic>> maps = await 
     db.query('Task', where: 'id = ?', whereArgs: [taskId]);
@@ -18,8 +17,7 @@ class TaskService{
   }
 
   static Future<List<Task>?> getAllTasks() async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     final List<Map<String, dynamic>> maps = await db.query('Task');
     if(maps.isEmpty) return null;
@@ -28,30 +26,26 @@ class TaskService{
   }
 
   static Future<int> addTask(Task task) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     return await db.insert('Task', task.toJson(),
     conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   static Future<int> updateTask(Task task) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
     return await db.update('Task',task.toJson(),
      where: 'id = ?', whereArgs: [task.id]);
   }
 
   static Future<int> deleteTask(Task task) async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     return await db.delete('Task', where: 'id = ?', whereArgs: [task.id]);
   }
 
   static Future<List<Task>?> getTasksByCategoryId(String categoryId)async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     final List<Map<String, dynamic>> maps = 
     await db.query('Task', where: 'categoryId = ?', whereArgs: [categoryId]);
@@ -61,8 +55,7 @@ class TaskService{
   }
 
   static Future<List<Task>?> getTasksByPriorityId(String priorityId)async{
-    DatabaseHelper dbHelper = DatabaseHelper();
-    Database db = await dbHelper.database;
+    Database db = await DatabaseHelper().database;
 
     final List<Map<String, dynamic>> maps =
     await db.query('Task', where: 'priorityId = ?', whereArgs: [priorityId]);

@@ -12,8 +12,8 @@ class InitialDbValues{
 
 static const Uuid _uuid =  Uuid();
 
-static final _category_1uuid =  _uuid.v4();
-static final _category_2uuid =  _uuid.v4();
+static final _category_1uuid = _uuid.v4();
+static final _category_2uuid = _uuid.v4();
 static final _category_3uuid = _uuid.v4();
 static final _category_4uuid = _uuid.v4();
 
@@ -35,14 +35,14 @@ static final _category_4uuid = _uuid.v4();
   ];
 
   static final List<Task> _tasks =[
-    Task(id: _uuid.v4(), taskName: "Make food", isCompleted: false, categoryId: _category_1uuid, priorityId: _priority_2uuid),
-    Task(id: _uuid.v4(), taskName: "Go to shop", isCompleted: false, categoryId: _category_1uuid, priorityId: _priority_1uuid),
-    Task(id: _uuid.v4(), taskName: "Pet the cat", isCompleted: true, categoryId: _category_1uuid, priorityId: _priority_3uuid),
-    Task(id: _uuid.v4(), taskName: "Learn programming", isCompleted: false, categoryId: _category_2uuid, priorityId: _priority_1uuid),
-    Task(id: _uuid.v4(), taskName: "Write an essay", isCompleted: false, categoryId: _category_2uuid, priorityId: _priority_2uuid),
-    Task(id: _uuid.v4(), taskName: "Ask questions from teacher", isCompleted: true, categoryId: _category_2uuid, priorityId: _priority_2uuid),
-    Task(id: _uuid.v4(), taskName: "Help other", isCompleted: false, categoryId: _category_2uuid, priorityId: _priority_3uuid),
-    Task(id: _uuid.v4(), taskName: "Go to gym", isCompleted: false, categoryId: _category_4uuid, priorityId: _priority_2uuid),
+    Task(id: _uuid.v4(), taskName: "Make food", isCompleted: false, todoCategoryId: _category_1uuid, todoPriorityId: _priority_2uuid),
+    Task(id: _uuid.v4(), taskName: "Go to shop", isCompleted: false, todoCategoryId: _category_1uuid, todoPriorityId: _priority_1uuid),
+    Task(id: _uuid.v4(), taskName: "Pet the cat", isCompleted: true, todoCategoryId: _category_1uuid, todoPriorityId: _priority_3uuid),
+    Task(id: _uuid.v4(), taskName: "Learn programming", isCompleted: false, todoCategoryId: _category_2uuid, todoPriorityId: _priority_1uuid),
+    Task(id: _uuid.v4(), taskName: "Write an essay", isCompleted: false, todoCategoryId: _category_2uuid, todoPriorityId: _priority_2uuid),
+    Task(id: _uuid.v4(), taskName: "Ask questions from teacher", isCompleted: true, todoCategoryId: _category_2uuid, todoPriorityId: _priority_2uuid),
+    Task(id: _uuid.v4(), taskName: "Help other", isCompleted: false, todoCategoryId: _category_2uuid, todoPriorityId: _priority_3uuid),
+    Task(id: _uuid.v4(), taskName: "Go to gym", isCompleted: false, todoCategoryId: _category_4uuid, todoPriorityId: _priority_2uuid),
   ];
 
   static Future<int> addCategories()async{

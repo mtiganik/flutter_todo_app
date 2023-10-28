@@ -18,7 +18,7 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true
       ),
-      home:  DbDebug()
+      home: DbDebug()
     );   
   }
 }
