@@ -28,7 +28,7 @@ class UserService{
     if(maps.isEmpty){
       return null;
     }
-    return List.generate(maps.length, (index) => User.fromJson(maps[index]));
+    return List.generate(maps.length, (index) => User.fromJson(maps[index], 0, ""));
   }
     static Future<int> deleteUser(User user) async{
     DatabaseHelper dbHelper = DatabaseHelper();

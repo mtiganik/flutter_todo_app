@@ -6,18 +6,21 @@ class User{
   final String? refreshToken;
   final String? firstName;
   final String? lastName;
-  final String? status;
+  final String? statusMessage;
+  final int? statusCode;
+
   User({required this.token,  this.refreshToken,
    this.firstName,  this.lastName,
-  this.status});
+  this.statusMessage, this.statusCode});
 
-  factory User.fromJson(Map<String, dynamic> json){
+  factory User.fromJson(Map<String, dynamic> json, int statusCode, String statusMessage){
     return User(
       token: json['token'],
       refreshToken: json['refreshToken'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      status: json['reasonPhrase']
+      statusCode: statusCode,
+      statusMessage: statusMessage
     );
   }
 

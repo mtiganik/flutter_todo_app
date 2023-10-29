@@ -4,7 +4,6 @@ import 'package:flutter/scheduler.dart' hide Priority;
 import 'package:flutter_todo_app/api/register_user_fetch.dart';
 import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:flutter_todo_app/models/category.dart';
-import 'package:flutter_todo_app/models/login.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/user.dart';
 import 'package:flutter_todo_app/db/database_helper.dart';
@@ -55,12 +54,12 @@ class DbDebug extends StatelessWidget {
     print("Deleted db");
   }
 
-Login user = Login(email: "test123@abc.ee", 
-password: "q1w2E+", firstName: "Mihkel", lastName: "Tiksu");
+// Login user = Login(email: "test123@abc.ee", 
+// password: "q1w2E+", firstName: "Mihkel", lastName: "Tiksu");
 
   void registerUser() async{
-    var response = await RegisterUserFetch(user);
-    print(response);
+    var response = await registerUserFetch(email: "test1223@abc.ee", password: "q1w2E+", firstName: "Mihkel", lastName: "Tiksu" );
+    print(response.statusMessage);
 
   }
 

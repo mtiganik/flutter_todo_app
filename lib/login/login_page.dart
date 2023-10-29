@@ -119,7 +119,7 @@ Future<User> loginUser(String email, String password) async {
     // Request was successful
     // final responseData = jsonDecode(response.body);
     // print("Login successful: $responseData");
-    var user = User.fromJson(json.decode(response.body));
+    var user = User.fromJson(json.decode(response.body), response.statusCode, "Login successful");
     return user;
   } else {
     // Request failed
