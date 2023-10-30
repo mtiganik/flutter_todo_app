@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 
 
- Future<User> registerUserFetch({required String email, required String password,required String firstName,required String lastName}) async {
+ Future<User> registerUserApi({required String email, required String password,required String firstName,required String lastName}) async {
    Map<String, String> headers = {"Content-type": "application/json"};
 
 final url = Uri.parse('${APIConfig.getUrl()}Account/Register');

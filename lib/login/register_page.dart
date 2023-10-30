@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/api/register_user_api.dart';
 import 'package:flutter_todo_app/login/email_text_input.dart';
 import 'package:flutter_todo_app/login/login_button.dart';
 import 'package:flutter_todo_app/login/login_header.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_todo_app/login/login_page.dart';
 import 'package:flutter_todo_app/login/name_input.dart';
 import 'package:flutter_todo_app/login/page_navigation.dart';
 import 'package:flutter_todo_app/login/password_confirm_password.dart';
+import 'package:flutter_todo_app/models/user.dart';
 
 class RegisterPage extends StatelessWidget{
   const RegisterPage({super.key});
@@ -55,6 +57,7 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
   String email = '';
   String password = '';
   String confirmPassword = '';
+  String registerError = '';
 
   void handleFirstnameChanged(String newFirstname){
     setState((){
@@ -86,8 +89,14 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
     });
   }
 
-  void handleRegister (){
+  void handleRegister ()async{
+    User user = await registerUserApi(email: email, password: password, firstName: firstname, lastName: lastname);
+    if (user.token == "" ){
+          setState((){
+      registerError = "Error occured: ${user.statusMessage}";
+    });
 
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -107,6 +116,7 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
       EmailTextInput(labelText: "Email", onEmailChanged: handleEmailChanged),
       PasswordConfirmPassword(labelText: "Password", onPasswordChanged: handlePassWordChanged,onConfirmPasswordChanged: handleConfirmPasswordChanged),
       LoginButton(label: "Register", onPressed: handleRegister),
+      Text(registerError, style: const TextStyle(color: Colors.red),),
       const PageNavigation(title: "Have account? Login instead", targetPage: LoginPage(),)
  
       ]

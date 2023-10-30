@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' hide Priority;
-import 'package:flutter_todo_app/api/register_user_fetch.dart';
+import 'package:flutter_todo_app/api/register_user_api.dart';
 import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';
@@ -58,7 +58,7 @@ class DbDebug extends StatelessWidget {
 // password: "q1w2E+", firstName: "Mihkel", lastName: "Tiksu");
 
   void registerUser() async{
-    var response = await registerUserFetch(email: "test1223@abc.ee", password: "q1w2E+", firstName: "Mihkel", lastName: "Tiksu" );
+    var response = await registerUserApi(email: "test1223@abc.ee", password: "q1w2E+", firstName: "Mihkel", lastName: "Tiksu" );
     print(response.statusMessage);
 
   }
