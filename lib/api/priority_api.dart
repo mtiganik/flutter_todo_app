@@ -14,6 +14,7 @@ class PriorityApi{
     if(response.statusCode == 200){
       return Priority.fromJson(jsonDecode(response.body));
     }
+    return null;
   }
 
   static Future<List<Priority>?> getAllPriorities() async{
