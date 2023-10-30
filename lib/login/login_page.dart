@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/login/email_text_input.dart';
 import 'package:flutter_todo_app/login/password_text_input.dart';
 import 'package:flutter_todo_app/models/user.dart';
+import 'package:flutter_todo_app/state_mgmt/auth_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget{
   const LoginPage({super.key});
@@ -66,10 +68,14 @@ void handlePasswordChange(String newPassword){
   });
 }
 
-void handleLoginPressed ()async{
-  User user = await loginUser(email = "aaa@bbb.eeq", password="q1w2E+");
+void handleLoginPressed (AuthModel model)async{
+  // AuthModel authmodel = new ;
+  // Provider.of<AuthModel>(context, listen: false);
+
+  model.setIsUserLoggedIn(true);
+  //User user = await loginUser(email = "aaa@bbb.eeq", password="q1w2E+");
   print("Pressed login");
-  print(user.token);
+  // print(user.token);
 }
 
   @override
@@ -90,7 +96,12 @@ void handleLoginPressed ()async{
        const LoginHeader(title: "Login",),
        EmailTextInput(labelText: "Email", onEmailChanged: handleEmailChanged),
        PasswordTextInput(labelText: "Password", onPasswordChanged: handlePasswordChange),
-       LoginButton(label: "Login", onPressed: handleLoginPressed),
+       Consumer<AuthModel>(
+        builder:(context, authModel, child){
+          return LoginButton(label: "Login", onPressed: () => handleLoginPressed(authModel));
+        }
+       ),
+       
 
         Text("Enter entered: $email"),
         const PageNavigation(title: "Register new account", targetPage: RegisterPage())
