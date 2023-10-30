@@ -6,9 +6,13 @@ import 'package:flutter_todo_app/models/category.dart'; // Import your Category 
 class CategoryApi {
   static String url = "${APIConfig.getUrl()}TodoCategories";
 
-  static Future<Category?> getCategoryById(String categoryId) async {
+  static Future<Category?> getCategoryById(String categoryId, String token) async {
     String idUrl = "$url/$categoryId";
-    final response = await http.get(Uri.parse(idUrl));
+    final response = await http.get(Uri.parse(idUrl), 
+    headers: {
+     'Authorization' : 'Bearer $token' 
+    }
+    );
 
     if (response.statusCode == 200) {
       return Category.fromJson(jsonDecode(response.body));
@@ -17,8 +21,11 @@ class CategoryApi {
     }
   }
 
-  static Future<List<Category>?> getAllCategories() async {
-    final response = await http.get(Uri.parse(url));
+  static Future<List<Category>?> getAllCategories(String token) async {
+    final response = await http
+        .get(Uri.parse(url), 
+        headers: {'Authorization': 'Bearer $token'}
+        );
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -29,23 +36,25 @@ class CategoryApi {
     }
   }
 
-  static Future<int> updateCategory(Category category) async {
+  static Future<int> updateCategory(Category category, String token) async {
     String idUrl = "$url/${category.id}";
     final response = await http.put(
       Uri.parse(idUrl),
       headers: {
         "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(category.toJson()),
     );
     return response.statusCode;
   }
 
-  static Future<int> addCategory(Category category) async {
+  static Future<int> addCategory(Category category, String token) async {
     final response = await http.post(
       Uri.parse(url),
       headers: {
         "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(category.toJson()),
     );
@@ -53,9 +62,13 @@ class CategoryApi {
     return response.statusCode;
   }
 
-  static Future<int> deleteCategory(String categoryId) async {
+  static Future<int> deleteCategory(String categoryId, String token) async {
     String idUrl = "$url/$categoryId";
-    final response = await http.delete(Uri.parse(idUrl));
+    final response = await http.delete(Uri.parse(idUrl),
+      headers: {
+        'Authorization': 'Bearer $token'
+      },
+);
 
     // 204 No Content indicates a successful deletion
     return response.statusCode;
