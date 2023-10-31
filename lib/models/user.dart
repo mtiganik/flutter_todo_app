@@ -3,13 +3,13 @@ import 'dart:convert';
 
 class User{
   final String token;
-  final String? refreshToken;
+  final String refreshToken;
   final String? firstName;
   final String? lastName;
   final String? statusMessage;
   final int? statusCode;
 
-  User({required this.token,  this.refreshToken,
+  User({required this.token, required this.refreshToken,
    this.firstName,  this.lastName,
   this.statusMessage, this.statusCode});
 
