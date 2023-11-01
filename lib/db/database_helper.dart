@@ -31,14 +31,14 @@ class DatabaseHelper {
       '''CREATE TABLE User(id INTEGER PRIMARY KEY, token TEXT, refreshToken TEXT, firstName TEXT, lastName TEXT)'''
     );
     await db.execute(
-      '''CREATE TABLE Category(id TEXT PRIMARY KEY, categoryName TEXT, categorySort INTEGER, syncDt INTEGER)'''
+      '''CREATE TABLE Category(id TEXT PRIMARY KEY, categoryName TEXT, categorySort INTEGER, syncDt TEXT)'''
     );
     await db.execute(
-        '''CREATE TABLE Priority(id TEXT PRIMARY KEY, priorityName TEXT, prioritySort INTEGER, syncDt INTEGER)''');
+        '''CREATE TABLE Priority(id TEXT PRIMARY KEY, priorityName TEXT, prioritySort INTEGER, syncDt TEXT)''');
 
     await db.execute(
-        '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, 
-        dueDt INTEGER, isCompleted BOOLEAN, syncDt INTEGER, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT, 
+        '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt TEXT, 
+        dueDt TEXT, isCompleted BOOLEAN, syncDt TEXT, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT, 
         FOREIGN KEY(todoCategoryId) REFERENCES Category(id), FOREIGN KEY(todoPriorityId) REFERENCES Priority(id))''');
     // await db.execute(
     //     '''CREATE TABLE Task(id TEXT PRIMARY KEY, taskName TEXT, taskSort INTEGER, createdDt INTEGER, dueDt INTEGER, isCompleted BOOLEAN, isArchived BOOLEAN, todoCategoryId TEXT, todoPriorityId TEXT)''');

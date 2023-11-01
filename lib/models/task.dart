@@ -3,13 +3,13 @@ class Task{
   final String id;
   final String taskName;
   final int? taskSort;
-  final DateTime? createdDt;
-  final DateTime? dueDt;
+  final String? createdDt;
+  final String? dueDt;
   final bool isCompleted;
   final bool? isArchived;
   final String todoCategoryId;
   final String todoPriorityId;
-  final DateTime? syncDt;
+  final String? syncDt;
 
   Task({
     required this.id,
@@ -17,27 +17,27 @@ class Task{
     required this.isCompleted,
     required this.todoCategoryId,
     required this.todoPriorityId,
-    DateTime? createdDt,
-    DateTime? dueDt,
-    DateTime? syncDt,
+    String? createdDt,
+    String? dueDt,
+    String? syncDt,
     this.isArchived = false,
     this.taskSort = 0,
-  }) : createdDt = createdDt ?? DateTime.now(),
-  syncDt = syncDt ?? DateTime.now(),
-  dueDt = dueDt ?? DateTime.now().add(Duration(days: 14 + DateTime.now().second % 7));
+  }) : createdDt = createdDt ?? DateTime.now().toIso8601String(),
+  syncDt = syncDt ?? DateTime.now().toIso8601String(),
+  dueDt = dueDt ?? DateTime.now().add(Duration(days: 14 + DateTime.now().second % 7)).toIso8601String();
 
   factory Task.fromJson(Map<String, dynamic> json){
     return Task(
       id: json['id'],
       taskName: json['taskName'],
       taskSort: json['taskSort'],
-      createdDt: DateTime.fromMillisecondsSinceEpoch(json['createdDt']),
-      dueDt: DateTime.fromMillisecondsSinceEpoch(json['dueDt']),
+      createdDt: json['createdDt'],
+      dueDt: json['dueDt'],
       isCompleted: json['isCompleted'] == 0 ? false: true,
       isArchived: json['isArchived'] == 0 ? false: true,
       todoCategoryId: json['todoCategoryId'],
       todoPriorityId: json['todoPriorityId'],
-      syncDt: DateTime.fromMillisecondsSinceEpoch(json['syncDt'])
+      syncDt: json['syncDt']
     );
   }
 
@@ -46,13 +46,13 @@ class Task{
       'id': id,
       'taskName': taskName,
       'taskSort': taskSort,
-      'createdDt': createdDt?.millisecondsSinceEpoch,
-      'dueDt': dueDt?.millisecondsSinceEpoch,
+      'createdDt': createdDt,
+      'dueDt': dueDt,
       'isCompleted': isCompleted,
       'isArchived': isArchived,
       'todoCategoryId':todoCategoryId,
       'todoPriorityId':todoPriorityId,
-      'syncDt':syncDt?.millisecondsSinceEpoch,
+      'syncDt':syncDt,
     };
   }
 

@@ -4,17 +4,17 @@ class Priority{
   final String id;
   final String priorityName;
   final int prioritySort;
-  final DateTime? syncDt;
+  final String? syncDt;
 
   Priority({required this.id, 
-  required this.priorityName, required this.prioritySort, DateTime? syncDt }) : syncDt =syncDt?? DateTime.now();
+  required this.priorityName, required this.prioritySort, String? syncDt }) : syncDt =syncDt?? DateTime.now().toIso8601String();
 
   factory Priority.fromJson(Map<String, dynamic> json){
     return Priority(
       id: json['id'],
       priorityName: json['priorityName'],
       prioritySort: json['prioritySort'],
-      syncDt: DateTime.fromMillisecondsSinceEpoch(json['syncDt'])
+      syncDt: json['syncDt'],
     );
   }
 
@@ -22,7 +22,7 @@ class Priority{
     'id' : id,
     'priorityName' : priorityName,
     'prioritySort' : prioritySort,
-    'syncDt' : syncDt?.millisecondsSinceEpoch,
+    'syncDt' : syncDt,
    };
 
    @override
