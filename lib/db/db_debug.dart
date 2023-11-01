@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' hide Priority;
-import 'package:flutter_todo_app/api/register_user_api.dart';
+import 'package:flutter_todo_app/api/api_methods/register_user_api.dart';
 import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';

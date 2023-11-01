@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/api/register_user_api.dart';
+import 'package:flutter_todo_app/api/api_methods/register_user_api.dart';
+import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:flutter_todo_app/login/email_text_input.dart';
 import 'package:flutter_todo_app/login/login_button.dart';
 import 'package:flutter_todo_app/login/login_header.dart';
@@ -8,6 +9,10 @@ import 'package:flutter_todo_app/login/name_input.dart';
 import 'package:flutter_todo_app/login/page_navigation.dart';
 import 'package:flutter_todo_app/login/password_confirm_password.dart';
 import 'package:flutter_todo_app/models/user.dart';
+import 'package:flutter_todo_app/services/user_service.dart';
+import 'package:flutter_todo_app/state_mgmt/auth_model.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatelessWidget{
   const RegisterPage({super.key});
@@ -89,13 +94,23 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
     });
   }
 
-  void handleRegister ()async{
+  void handleRegister (AuthModel authModel)async{
+
+
     User user = await registerUserApi(email: email, password: password, firstName: firstname, lastName: lastname);
     if (user.token == "" ){
           setState((){
       registerError = "Error occured: ${user.statusMessage}";
     });
-
+    }
+    else{
+      UserService.addUser(user);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', user.token);
+      prefs.setString('refreshToken', user.refreshToken);
+      await InitialDbValues.addDataToSQL();
+      await InitialDbValues.addDataToAPI();
+      authModel.setIsUserLoggedIn(true);
     }
   }
   @override
@@ -115,7 +130,13 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
       NameInput(label: "Last Name", onInputChanged: handleLastnameChanged),
       EmailTextInput(labelText: "Email", onEmailChanged: handleEmailChanged),
       PasswordConfirmPassword(labelText: "Password", onPasswordChanged: handlePassWordChanged,onConfirmPasswordChanged: handleConfirmPasswordChanged),
-      LoginButton(label: "Register", onPressed: handleRegister),
+      Consumer<AuthModel>(
+        builder:(context, authModel, child){
+          return LoginButton(label: "Register", 
+          onPressed:() =>  handleRegister(authModel));
+        }
+      ),
+      
       Text(registerError, style: const TextStyle(color: Colors.red),),
       const PageNavigation(title: "Have account? Login instead", targetPage: LoginPage(),)
  

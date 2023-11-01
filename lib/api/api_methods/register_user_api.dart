@@ -34,7 +34,7 @@ final url = Uri.parse('${APIConfig.getUrl()}Account/Register');
   if (responseBody.containsKey("messages") && responseBody["messages"].isNotEmpty) {
     statusMessage = responseBody["messages"][0];
   }
-  return User(token: "", statusCode: response.statusCode, statusMessage: statusMessage);
+  return User(token: "", refreshToken: "", statusCode: response.statusCode, statusMessage: statusMessage);
 
 }
  }

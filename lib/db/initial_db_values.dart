@@ -1,4 +1,7 @@
 
+import 'package:flutter_todo_app/api/api_methods/category_api.dart';
+import 'package:flutter_todo_app/api/api_methods/priority_api.dart';
+import 'package:flutter_todo_app/api/api_methods/task_api.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/task.dart';
@@ -63,6 +66,42 @@ static final _category_4uuid = _uuid.v4();
     for(Task task in _tasks){
       await TaskService.addTask(task);
     }
+    return 1;
+  }
+
+
+  static Future<int> addDataToSQL() async{
+    await addCategories();
+    await addPriorities();
+    await addTask();
+    return 1;
+  }
+
+  static Future<int> addCategoriesApi()async{
+    for(Category cat in _categories){
+      CategoryApi.addCategory(cat);
+    }
+    return 1;
+  }
+
+  static Future<int> addPrioritiesApi() async{
+    for(Priority priority in _priorities){
+      PriorityApi.addPriority(priority);
+    }
+    return 1;
+  }
+
+  static Future<int> addTaskApi() async{
+    for(Task task in _tasks){
+      TaskApi.addTask(task);
+    }
+    return 1;
+  }
+
+  static Future<int> addDataToAPI() async{
+    await addCategoriesApi();
+    await addPrioritiesApi();
+    await addTaskApi();
     return 1;
   }
 }

@@ -1,16 +1,19 @@
 import 'dart:convert';
 import 'package:flutter_todo_app/api/api_config.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_todo_app/models/category.dart'; // Import your Category model
+import 'package:flutter_todo_app/models/category.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import your Category model
 
 class CategoryApi {
   static String url = "${APIConfig.getUrl()}TodoCategories";
 
-  static Future<Category?> getCategoryById(String categoryId, String token) async {
+  static Future<Category?> getCategoryById(String categoryId) async {
     String idUrl = "$url/$categoryId";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final response = await http.get(Uri.parse(idUrl), 
     headers: {
-     'Authorization' : 'Bearer $token' 
+     'Authorization' : 'Bearer ${prefs.getString("token")}' 
     }
     );
 
@@ -21,10 +24,12 @@ class CategoryApi {
     }
   }
 
-  static Future<List<Category>?> getAllCategories(String token) async {
+  static Future<List<Category>?> getAllCategories() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final response = await http
         .get(Uri.parse(url), 
-        headers: {'Authorization': 'Bearer $token'}
+        headers: {'Authorization': 'Bearer ${prefs.getString("token")}'}
         );
 
     if (response.statusCode == 200) {
@@ -36,25 +41,29 @@ class CategoryApi {
     }
   }
 
-  static Future<int> updateCategory(Category category, String token) async {
+  static Future<int> updateCategory(Category category) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
     String idUrl = "$url/${category.id}";
     final response = await http.put(
       Uri.parse(idUrl),
       headers: {
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       },
       body: jsonEncode(category.toJson()),
     );
     return response.statusCode;
   }
 
-  static Future<int> addCategory(Category category, String token) async {
+  static Future<int> addCategory(Category category) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final response = await http.post(
       Uri.parse(url),
       headers: {
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       },
       body: jsonEncode(category.toJson()),
     );
@@ -62,11 +71,13 @@ class CategoryApi {
     return response.statusCode;
   }
 
-  static Future<int> deleteCategory(String categoryId, String token) async {
+  static Future<int> deleteCategory(String categoryId) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
     String idUrl = "$url/$categoryId";
     final response = await http.delete(Uri.parse(idUrl),
       headers: {
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       },
 );
 

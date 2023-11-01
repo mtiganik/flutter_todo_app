@@ -98,7 +98,8 @@ void handleLoginPressed (AuthModel model)async{
        PasswordTextInput(labelText: "Password", onPasswordChanged: handlePasswordChange),
        Consumer<AuthModel>(
         builder:(context, authModel, child){
-          return LoginButton(label: "Login", onPressed: () => handleLoginPressed(authModel));
+          return LoginButton(label: "Login", 
+          onPressed: () => handleLoginPressed(authModel));
         }
        ),
        

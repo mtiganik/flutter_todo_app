@@ -4,15 +4,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_todo_app/api/api_config.dart';
 import 'package:flutter_todo_app/models/priority.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PriorityApi{
   static String url = "${APIConfig.getUrl()}TodoPriorities";
 
-  static Future<Priority?> getPriorityById(String priorityId, String token) async{
+  static Future<Priority?> getPriorityById(String priorityId) async{
     String idUrl = "$url/$priorityId";
+    SharedPreferences prefs = await SharedPreferences.getInstance();    
+
     final response = await http.get(Uri.parse(idUrl),
       headers: {
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       },);
     if(response.statusCode == 200){
       return Priority.fromJson(jsonDecode(response.body));
@@ -20,10 +23,11 @@ class PriorityApi{
     return null;
   }
 
-  static Future<List<Priority>?> getAllPriorities(String token) async{
+  static Future<List<Priority>?> getAllPriorities() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final response = await http.get(Uri.parse(url),
       headers: {
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       },);
     if(response.statusCode == 200){
       final List<dynamic> data = jsonDecode(response.body);
@@ -35,25 +39,27 @@ class PriorityApi{
     }
   }
 
-  static Future<int> updatePriority(Priority priority, String token) async{
+  static Future<int> updatePriority(Priority priority) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String idUrl = "$url/${priority.id}";
     final response = await http.put(
       Uri.parse(idUrl),
       headers:{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       },
       body: jsonEncode(priority.toJson()),
     );
     return response.statusCode;
   }
 
-  static Future<int> addPriority(Priority priority, String token) async{
+  static Future<int> addPriority(Priority priority) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final response = await http.post(
       Uri.parse(url),
       headers:{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       },
       body: jsonEncode(priority.toJson()),
     );
@@ -61,11 +67,12 @@ class PriorityApi{
     return response.statusCode;
   }
 
-  static Future<int> deletePriority(String priorityId, String token) async{
+  static Future<int> deletePriority(String priorityId) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String idUrl = "$url/$priorityId";
     final response = await http.delete(Uri.parse(idUrl),
       headers: {
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       });
 
     return response.statusCode;
