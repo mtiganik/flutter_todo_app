@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_todo_app/debug/debug_auth_page.dart';
 import 'package:flutter_todo_app/login/login_button.dart';
 import 'package:flutter_todo_app/login/login_header.dart';
 import 'package:flutter_todo_app/login/page_navigation.dart';
@@ -105,7 +106,8 @@ void handleLoginPressed (AuthModel model)async{
        
 
         Text("Enter entered: $email"),
-        const PageNavigation(title: "Register new account", targetPage: RegisterPage())
+        const PageNavigation(title: "Register new account", targetPage: RegisterPage()),
+        // const PageNavigation(title: "Debug Auth Model", targetPage: DebugAuthPage()),
       ]
     ));
   }

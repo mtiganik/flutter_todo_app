@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/db/db_debug.dart';
+import 'package:flutter_todo_app/debug/db_debug.dart';
 import 'package:flutter_todo_app/home/home_screen.dart';
 import 'package:flutter_todo_app/login/login_page.dart';
 import 'package:flutter_todo_app/login/register_page.dart';
@@ -32,7 +32,20 @@ class MainApp extends StatelessWidget {
                   }
                 }
               ),
-              '/main' : (context) => const HomeScreen()
+              '/main' : (context) => const HomeScreen(),
+
+              // '/main' : (context) => Consumer<AuthModel>(
+              //   builder: (context, authModel, child){
+
+              //     if(!authModel.isInitilized()){
+              //       return const CircularProgressIndicator();
+              //     }else if(authModel.isUserLoggedIn()){
+              //       return const HomeScreen();
+              //     }else{
+              //       return const LoginPage();
+              //     }
+              //   },
+              // )
             },
             theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),

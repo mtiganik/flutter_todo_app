@@ -95,7 +95,7 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
     });
   }
 
-  void handleRegister (AuthModel authModel)async{
+  void handleRegister (AuthModel authModel) async{
     User user = await registerUserApi(email: email, password: password, firstName: firstname, lastName: lastname);
     if (user.token == "" ){
           setState((){
@@ -105,9 +105,10 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
     else{
       print("Start of creating user");
       await SharedPreferencesSettings().addUserSharedPrefs(user);
-      authModel.setIsUserLoggedIn(true);
 
       await InitialDbValues.addDataToAPI();
+      authModel.setIsUserLoggedIn(true);
+      Navigator.pop(context);
     }
   }
   @override
