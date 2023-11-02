@@ -79,21 +79,31 @@ static final _category_4uuid = _uuid.v4();
 
   static Future<int> addCategoriesApi()async{
     for(Category cat in _categories){
-      CategoryApi.addCategory(cat);
+      int responseCode = await CategoryApi.addCategory(cat);
+      if(responseCode == 201){
+        print("Added: $cat");
+      }
     }
     return 1;
   }
 
   static Future<int> addPrioritiesApi() async{
     for(Priority priority in _priorities){
-      PriorityApi.addPriority(priority);
+      int responseCode = await PriorityApi.addPriority(priority);
+      if(responseCode == 201){
+        print("Added: $priority");
+      }
     }
     return 1;
   }
 
   static Future<int> addTaskApi() async{
     for(Task task in _tasks){
-      TaskApi.addTask(task);
+      int responseCode = await TaskApi.addTask(task);
+      if(responseCode == 201){
+        print("Added: $task");
+      }
+
     }
     return 1;
   }

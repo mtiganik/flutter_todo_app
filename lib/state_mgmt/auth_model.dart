@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthModel extends ChangeNotifier{
   bool _isUserLoggedIn = false;
@@ -12,8 +13,9 @@ class AuthModel extends ChangeNotifier{
   }
 
   Future<void> init() async{
-    var user = await UserService.getUser();
-    if(user == null) {
+    // var user = await UserService.getUser();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getString("token") == null) {
       _isUserLoggedIn = false;
     } else {
       _isUserLoggedIn = true;

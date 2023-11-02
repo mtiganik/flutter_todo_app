@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/api_methods/category_api.dart';
 import 'package:flutter_todo_app/api/api_methods/task_api.dart';
+import 'package:flutter_todo_app/api/shared_preferences_config.dart';
 import 'package:flutter_todo_app/db/database_helper.dart';
 import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:flutter_todo_app/services/category_service.dart';
@@ -19,7 +20,8 @@ class HomeScreen extends StatelessWidget{
   }
 
   Future<void> handleLogout(AuthModel authModel) async{
-
+    await SharedPreferencesSettings().removeSharedPrefs();
+    authModel.setIsUserLoggedIn(false);
   }
   @override
   Widget build(BuildContext context) {

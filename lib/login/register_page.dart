@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/api_methods/register_user_api.dart';
+import 'package:flutter_todo_app/api/shared_preferences_config.dart';
 import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:flutter_todo_app/login/email_text_input.dart';
 import 'package:flutter_todo_app/login/login_button.dart';
@@ -95,8 +96,6 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
   }
 
   void handleRegister (AuthModel authModel)async{
-
-
     User user = await registerUserApi(email: email, password: password, firstName: firstname, lastName: lastname);
     if (user.token == "" ){
           setState((){
@@ -104,13 +103,11 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
     });
     }
     else{
-      UserService.addUser(user);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', user.token);
-      prefs.setString('refreshToken', user.refreshToken);
-      await InitialDbValues.addDataToSQL();
-      await InitialDbValues.addDataToAPI();
+      print("Start of creating user");
+      await SharedPreferencesSettings().addUserSharedPrefs(user);
       authModel.setIsUserLoggedIn(true);
+
+      await InitialDbValues.addDataToAPI();
     }
   }
   @override
