@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget{
   const HomeScreen({super.key});
 
   Future<void> handleLogout(AuthModel authModel) async{
-    await SharedPreferencesSettings().removeSharedPrefs();
+    await SharedPreferencesConfig().removeSharedPrefs();
     authModel.setIsUserLoggedIn(false);
   }
 

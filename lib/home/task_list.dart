@@ -37,6 +37,7 @@ class _TaskListState extends State<TaskList>{
         } else{
           // display data
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index){
               Task task = snapshot.data![index];

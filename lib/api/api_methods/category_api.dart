@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_todo_app/api/api_config.dart';
+import 'package:flutter_todo_app/api/handle_401_status.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import your Category model
@@ -16,6 +17,7 @@ class CategoryApi {
      'Authorization' : 'Bearer ${prefs.getString("token")}' 
     }
     );
+    await const LogoutHandle().handle401Status(response.statusCode);
 
     if (response.statusCode == 200) {
       return Category.fromJson(jsonDecode(response.body));
@@ -31,6 +33,7 @@ class CategoryApi {
         .get(Uri.parse(url), 
         headers: {'Authorization': 'Bearer ${prefs.getString("token")}'}
         );
+    await const LogoutHandle().handle401Status(response.statusCode);
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -53,6 +56,7 @@ class CategoryApi {
       },
       body: jsonEncode(category.toJson()),
     );
+    await const LogoutHandle().handle401Status(response.statusCode);
     return response.statusCode;
   }
 
@@ -67,19 +71,20 @@ class CategoryApi {
       },
       body: jsonEncode(category.toJson()),
     );
+    await const LogoutHandle().handle401Status(response.statusCode);
     // 201 succesfull
     return response.statusCode;
   }
 
   static Future<int> deleteCategory(String categoryId) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String idUrl = "$url/$categoryId";
-    final response = await http.delete(Uri.parse(idUrl),
-      headers: {
-        'Authorization': 'Bearer ${prefs.getString("token")}'
-      },
-);
+    final response = await http.delete(
+      Uri.parse(idUrl),
+      headers: {'Authorization': 'Bearer ${prefs.getString("token")}'},
+    );
+    await const LogoutHandle().handle401Status(response.statusCode);
 
     // 204 No Content indicates a successful deletion
     return response.statusCode;

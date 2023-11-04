@@ -104,7 +104,7 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
     }
     else{
       print("Start of creating user");
-      await SharedPreferencesSettings().addUserSharedPrefs(user);
+      await SharedPreferencesConfig().addUserSharedPrefs(user);
 
       await InitialDbValues.addDataToAPI();
       authModel.setIsUserLoggedIn(true);

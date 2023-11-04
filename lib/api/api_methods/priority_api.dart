@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_todo_app/api/handle_401_status.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_todo_app/api/api_config.dart';
 import 'package:flutter_todo_app/models/priority.dart';
@@ -17,6 +18,9 @@ class PriorityApi{
       headers: {
         'Authorization': 'Bearer ${prefs.getString("token")}'
       },);
+
+    await const LogoutHandle().handle401Status(response.statusCode);
+
     if(response.statusCode == 200){
       return Priority.fromJson(jsonDecode(response.body));
     }
@@ -29,6 +33,7 @@ class PriorityApi{
       headers: {
         'Authorization': 'Bearer ${prefs.getString("token")}'
       },);
+    await const LogoutHandle().handle401Status(response.statusCode);
     if(response.statusCode == 200){
       final List<dynamic> data = jsonDecode(response.body);
       final priorities = data.map((priority) 
@@ -50,6 +55,7 @@ class PriorityApi{
       },
       body: jsonEncode(priority.toJson()),
     );
+    await const LogoutHandle().handle401Status(response.statusCode);
     return response.statusCode;
   }
 
@@ -63,6 +69,7 @@ class PriorityApi{
       },
       body: jsonEncode(priority.toJson()),
     );
+    await const LogoutHandle().handle401Status(response.statusCode);
     // 201 success
     return response.statusCode;
   }
@@ -74,6 +81,7 @@ class PriorityApi{
       headers: {
         'Authorization': 'Bearer ${prefs.getString("token")}'
       });
+    await const LogoutHandle().handle401Status(response.statusCode);
 
     return response.statusCode;
   }
