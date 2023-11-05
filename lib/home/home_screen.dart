@@ -43,8 +43,8 @@ class HomeScreen extends StatelessWidget{
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: ((context) => const CategoriesHome()))); }, child: Text("Categories")),
-              ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: ((context) => const PrioritiesHome()))); }, child: Text("Priorities")),
+              ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: ((context) => const CategoriesHome()))); }, child: const Text("Categories")),
+              ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: ((context) => const PrioritiesHome()))); }, child: const Text("Priorities")),
                 Consumer<AuthModel>(builder: (context, authModel, child) {
                   return ElevatedButton(
                       onPressed: () => handleLogout(authModel),
