@@ -8,10 +8,8 @@ import '../../models/category.dart';
 
 class CategoriesList extends StatefulWidget{
   const CategoriesList({super.key});
-
   @override
   State<StatefulWidget> createState() => _CategoriesListState();
-
 }
 
 class _CategoriesListState extends State<CategoriesList>{
