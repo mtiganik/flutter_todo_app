@@ -5,12 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesConfig {
 
-  Future<void> addUserSharedPrefs(User user) async{
+  Future<void> updateTokenRefreshToken(User user) async{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', user.token);
       prefs.setString('refreshToken', user.refreshToken);
-      prefs.setString('firstName', user.firstName ?? "");
-      prefs.setString('lastName', user.lastName ?? "");
   }
 
   Future<User> getUserFromSharedPrefs() async{

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/api_methods/category_api.dart';
+import 'package:flutter_todo_app/home/categories/category_list_item.dart';
 
 import '../../models/category.dart';
 
@@ -38,9 +39,8 @@ class _CategoriesListState extends State<CategoriesList>{
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index){
             Category category = snapshot.data![index];
-            return ListTile(
-              title: Text(category.categoryName)
-            );
+            return CategoryListItem(category: category);
+
           },
         );
       }
