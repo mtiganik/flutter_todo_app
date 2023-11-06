@@ -29,12 +29,10 @@ class _CategoryListItemState extends State<CategoryListItem>{
         }));
       },
       trailing: IconButton(
-        icon: Icon(Icons.delete),
+        icon: const Icon(Icons.delete),
         onPressed: ()async {
-          final shouldDelete = await showDeleteConfirmationDialog(context);
-          if (shouldDelete){
-            // delete functionality here
-          }
+           showDeleteConfirmationDialog(context);
+          
 
         },
       ),
@@ -42,31 +40,19 @@ class _CategoryListItemState extends State<CategoryListItem>{
   }
 
 
-    Future<bool> showDeleteConfirmationDialog(BuildContext context) async {
-    return await showDialog(
+  Future<void> showDeleteConfirmationDialog(BuildContext context) async {
+    final result = await showDialog<bool>(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('Delete Category'),
-          content: Text('Are you sure you want to delete this category?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false); // Cancel
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true); // Confirm
-              },
-              child: Text('Delete'),
-            ),
-          ],
+        return const DeleteConfirmationDialog(
+          title: "Delete Category",
+          content: "Are you sure you want to delete this category?",
         );
       },
     );
+
+    if (result != null && result) {
+      print("Pressed delete");
+    }
   }
-
-
 }

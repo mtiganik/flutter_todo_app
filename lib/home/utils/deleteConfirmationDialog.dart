@@ -8,7 +8,7 @@ class DeleteConfirmationDialog extends StatelessWidget{
   const DeleteConfirmationDialog({super.key, required this.title, required this.content});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return AlertDialog(
       title: Text(title),
       content: Text(content),
@@ -31,31 +31,3 @@ class DeleteConfirmationDialog extends StatelessWidget{
   }
 
 }
-
-//   Future<bool> deleteConfirmationDialog(BuildContext context, title, String content) async {
-
-//     return await showDialog(
-//       context: context,
-//       builder: (context) {
-//         return AlertDialog(
-//           title: Text('Delete Category'),
-//           content: Text('Are you sure you want to delete this category?'),
-//           actions: <Widget>[
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(false); // Cancel
-//               },
-//               child: Text('Cancel'),
-//             ),
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop(true); // Confirm
-//               },
-//               child: Text('Delete'),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }

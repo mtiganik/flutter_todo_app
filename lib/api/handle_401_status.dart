@@ -49,7 +49,7 @@ class _LogoutHandleState extends State<LogoutHandle> {
         if (response.statusCode == 200) {
           // update prefs
           user = User.fromJson(json.decode(response.body), 200, "Updated user");
-          await SharedPreferencesConfig().addUserSharedPrefs(user);
+          await SharedPreferencesConfig().updateTokenRefreshToken(user);
 
           // TODO: refresh page
         } else {
