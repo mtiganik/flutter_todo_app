@@ -15,7 +15,7 @@ class EditCategoryPage extends StatefulWidget{
 class _EditCategoryState extends State<EditCategoryPage>{
   @override
   Widget build(BuildContext context) {
-  return Text("Edit page of category: daily commit ${widget.category.categoryName}");
+  return Text("Edit page of category: daily commit 2nd time ${widget.category.categoryName}");
   }
 
 }
