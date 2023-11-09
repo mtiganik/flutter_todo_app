@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/api_methods/category_api.dart';
 import 'package:flutter_todo_app/home/categories/add_category_page.dart';
-import 'package:flutter_todo_app/home/categories/categories_list.dart';
 import 'package:flutter_todo_app/home/categories/category_list_item.dart';
 import 'package:flutter_todo_app/models/category.dart';
 
@@ -20,6 +19,26 @@ class _CategoriesHomeState extends State<CategoriesHome> {
     categoriesFuture = CategoryApi.getAllCategories();
   }
 
+  Future<void> refreshCategories() async{
+    setState((){
+      categoriesFuture = CategoryApi.getAllCategories();
+    });
+  }
+
+  Future<void> handleAddCategoryPress(BuildContext context) async{
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+        builder: ((context) => const AddCategoryPage())
+        )).then((value){
+      if (value == true){
+        setState(() {
+          categoriesFuture = CategoryApi.getAllCategories();
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +51,7 @@ class _CategoriesHomeState extends State<CategoriesHome> {
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => AddCategoryPage())));
-                  },
+                  onPressed: (){ handleAddCategoryPress(context);},
                   child: const Text("Add new")),
             ]),
             FutureBuilder(

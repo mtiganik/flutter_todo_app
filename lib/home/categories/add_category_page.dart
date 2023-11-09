@@ -4,6 +4,7 @@ import 'package:flutter_todo_app/models/category.dart';
 import 'package:uuid/uuid.dart';
 
 class AddCategoryPage extends StatefulWidget{
+
   const AddCategoryPage({super.key});
   @override
   State<StatefulWidget> createState() => _AddCategoryPageState();
@@ -92,7 +93,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>{
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content: Text('New category added ')));
-                      Navigator.pop(context);
+                      Navigator.pop(context,true); // if return with true, then refresh prev page
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
