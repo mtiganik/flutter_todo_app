@@ -19,12 +19,6 @@ class _CategoriesHomeState extends State<CategoriesHome> {
     categoriesFuture = CategoryApi.getAllCategories();
   }
 
-  Future<void> refreshCategories() async{
-    setState((){
-      categoriesFuture = CategoryApi.getAllCategories();
-    });
-  }
-
   Future<void> handleAddCategoryPress(BuildContext context) async{
       Navigator.push(
         context,

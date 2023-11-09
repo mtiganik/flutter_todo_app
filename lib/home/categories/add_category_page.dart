@@ -29,6 +29,30 @@ class _AddCategoryPageState extends State<AddCategoryPage>{
     else {return false;}
   }
 
+  Future<void> handleAddCategoryPress() async{
+    if(_formKey.currentState!.validate()){
+
+        ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Processing Data')),
+      );
+      var postResult = await handleDataAdd();
+      if (context.mounted) {
+        if (postResult) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('New category added ')));
+          Navigator.pop(context,true); // if return with true, then refresh prev page
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text(
+                      'Error adding new category ')));
+        }
+      }
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
@@ -81,29 +105,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>{
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: ()async{
-                if(_formKey.currentState!.validate()){
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-                  var postResult = await handleDataAdd();
-                  if (context.mounted) {
-                    if (postResult) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('New category added ')));
-                      Navigator.pop(context,true); // if return with true, then refresh prev page
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Error adding new category ')));
-                    }
-                  }
-
-                }
-              }, 
+              onPressed: handleAddCategoryPress,
               child: const Text("Add category"))
           ],
         )
