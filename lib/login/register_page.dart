@@ -64,6 +64,7 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
   String password = '';
   String confirmPassword = '';
   String registerError = '';
+  bool isLoading = false;
 
   void handleFirstnameChanged(String newFirstname){
     setState((){
@@ -96,19 +97,39 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
   }
 
   void handleRegister (AuthModel authModel) async{
-    User user = await registerUserApi(email: email, password: password, firstName: firstname, lastName: lastname);
-    if (user.token == "" ){
-          setState((){
-      registerError = "Error occured: ${user.statusMessage}";
-    });
-    }
-    else{
-      print("Start of creating user");
-      await SharedPreferencesConfig().updateTokenRefreshToken(user);
+    try {
+      setState((){
+        isLoading = true;
+        registerError = "";
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Processing Data')));
 
-      await InitialDbValues.addDataToAPI();
-      authModel.setIsUserLoggedIn(true);
-      Navigator.pop(context);
+      User user = await registerUserApi(
+          email: email,
+          password: password,
+          firstName: firstname,
+          lastName: lastname);
+      if (user.token == "") {
+        setState(() {
+          registerError = "Error occured: ${user.statusMessage}";
+        });
+      } else {
+        print("Start of creating user");
+        await SharedPreferencesConfig().updateTokenRefreshToken(user);
+
+        await InitialDbValues.addDataToAPI();
+        authModel.setIsUserLoggedIn(true);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('New user created succesfully')));
+          Navigator.pop(context);
+        }
+      }
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
   @override
@@ -130,13 +151,15 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
       PasswordConfirmPassword(labelText: "Password", onPasswordChanged: handlePassWordChanged,onConfirmPasswordChanged: handleConfirmPasswordChanged),
       Consumer<AuthModel>(
         builder:(context, authModel, child){
-          return LoginButton(label: "Register", 
+          return isLoading 
+          ? const CircularProgressIndicator()
+          : LoginButton(label: "Register", 
           onPressed:() =>  handleRegister(authModel));
         }
       ),
       
       Text(registerError, style: const TextStyle(color: Colors.red),),
-      const PageNavigation(title: "Have account? Login instead", targetPage: LoginPage(),)
+      const PageNavigation(title: "Have account? Login instead", targetPage: LoginPage(),),
  
       ]
       ));
