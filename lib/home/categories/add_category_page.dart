@@ -33,8 +33,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>{
     if(_formKey.currentState!.validate()){
 
         ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
-      );
+        const SnackBar(content: Text('Processing Data')));
       var postResult = await handleDataAdd();
       if (context.mounted) {
         if (postResult) {
