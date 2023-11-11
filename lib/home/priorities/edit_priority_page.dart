@@ -17,6 +17,12 @@ class _EditPriorityPageState extends State<EditPriorityPage>{
   final priorityNameController = TextEditingController();
   final prioritySortController = TextEditingController();
 
+@override
+void initState(){
+  super.initState();
+  priorityNameController.text = widget.priority.priorityName;
+  prioritySortController.text = widget.priority.prioritySort.toString();
+}
 Future<Priority?> updatePriority() async{
   Priority newPriority = Priority(
     id: widget.priority.id,

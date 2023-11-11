@@ -19,6 +19,14 @@ class _EditCategoryState extends State<EditCategoryPage>{
   final categoryNameController = TextEditingController();
   final categorySortController = TextEditingController();
 
+
+  @override
+  void initState(){
+    super.initState();
+    categoryNameController.text = widget.category.categoryName;
+    categorySortController.text = widget.category.categorySort.toString();
+  }
+
 Future<Category?> updateCategory() async{
   Category newCategory = Category(
     id: widget.category.id,
@@ -48,12 +56,6 @@ Future<Category?> updateCategory() async{
     }
   }
 
-  @override
-  void initState(){
-    super.initState();
-    categoryNameController.text = widget.category.categoryName;
-    categorySortController.text = widget.category.categorySort.toString();
-  }
   @override
   Widget build(BuildContext context) {
   return Scaffold(
