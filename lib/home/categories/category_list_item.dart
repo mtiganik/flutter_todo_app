@@ -10,7 +10,8 @@ import 'package:flutter_todo_app/models/task.dart';
 
 class CategoryListItem extends StatefulWidget{
   final Category category;
-  const CategoryListItem({super.key, required this.category});
+  final Function(Category) onCategoryUpdate;
+  const CategoryListItem({super.key, required this.category, required this.onCategoryUpdate});
 
   @override
   State<StatefulWidget> createState() => _CategoryListItemState();
@@ -26,7 +27,7 @@ class _CategoryListItemState extends State<CategoryListItem>{
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context){
           return EditCategoryPage(category: widget.category);
-        }));
+        })).then((value) => {widget.onCategoryUpdate(value)});
       },
       trailing: IconButton(
         icon: const Icon(Icons.delete),

@@ -13,11 +13,32 @@ class CategoriesHome extends StatefulWidget {
 
 class _CategoriesHomeState extends State<CategoriesHome> {
   Future<List<Category>?>? categoriesFuture;
+  List<Category>? categories;
   @override
   void initState() {
     super.initState();
+    refreshCategories();
     categoriesFuture = CategoryApi.getAllCategories();
   }
+
+    Future<void> refreshCategories() async {
+    final List<Category>? updatedCategories = await CategoryApi.getAllCategories();
+    setState(() {
+      categories = updatedCategories;
+    });
+  }
+
+  Future<void> handleCategoryEdit(Category updatedCategory) async {
+
+    final int updatedIndex = categories!.indexWhere((category) => category.id == updatedCategory.id);
+
+    if (updatedIndex != -1) {
+      setState(() {
+        categories![updatedIndex] = updatedCategory;
+      });
+    }
+  }
+
 
   Future<void> handleAddCategoryPress(BuildContext context) async{
       Navigator.push(
@@ -25,13 +46,15 @@ class _CategoriesHomeState extends State<CategoriesHome> {
         MaterialPageRoute(
         builder: ((context) => const AddCategoryPage())
         )).then((value){
-      if (value == true){
+      if (value is Category){
         setState(() {
-          categoriesFuture = CategoryApi.getAllCategories();
+          categories?.insert(0,value);
+          //categoriesFuture = CategoryApi.getAllCategories();
         });
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +85,11 @@ class _CategoriesHomeState extends State<CategoriesHome> {
                   } else {
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
+                      // itemCount: snapshot.data!.length,
+                      itemCount: categories!.length,
                       itemBuilder: (context, index) {
-                        Category category = snapshot.data![index];
-                        return CategoryListItem(category: category);
+                        Category category = categories![index];
+                        return CategoryListItem(category: category, onCategoryUpdate: handleCategoryEdit);
                       },
                     );
                   }

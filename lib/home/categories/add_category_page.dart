@@ -16,7 +16,7 @@ class _AddCategoryPageState extends State<AddCategoryPage>{
   final categoryNameController = TextEditingController();
   final categorySortController = TextEditingController();
 
-  Future<bool> handleDataAdd() async{
+  Future<Category?> handleDataAdd() async{
 
     Category cat = Category(
       id: const Uuid().v4(),
@@ -25,27 +25,26 @@ class _AddCategoryPageState extends State<AddCategoryPage>{
       );
 
     var result = await CategoryApi.addCategory(cat);
-    if(result == 201){return true;}
-    else {return false;}
+    if(result == 201){return cat;}
+    else {return null;}
   }
 
   Future<void> handleAddCategoryPress() async{
     if(_formKey.currentState!.validate()){
 
-        ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')));
-      var postResult = await handleDataAdd();
+      var addedCategory = await handleDataAdd();
       if (context.mounted) {
-        if (postResult) {
+        if (addedCategory == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('New category added ')));
-          Navigator.pop(context,true); // if return with true, then refresh prev page
+              const SnackBar(content: Text('Error adding new category ')));
+
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                  content: Text(
-                      'Error adding new category ')));
+                  content: Text('New category added ')));
+          Navigator.pop(context,addedCategory); 
+
+
         }
       }
 

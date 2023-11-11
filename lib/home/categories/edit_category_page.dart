@@ -26,24 +26,22 @@ Future<Category?> updateCategory() async{
     categorySort: int.parse(categorySortController.text),
   );
   var response = await CategoryApi.updateCategory(newCategory);
-  if (response == 201) {return newCategory;}
+  if (response >= 200 && response < 300) {return newCategory;}
   else {return null;}
 }
 
   Future<void> handleEditButtonPress() async{
     if(_formKey.currentState!.validate()){
-        ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')));
-      var postResult = await updateCategory();
+      var updatedCategory = await updateCategory();
       if(context.mounted){
-        if(postResult == null){
+        if(updatedCategory == null){
         ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Error editing category')));
 
         }else{
         ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Updated category')));
-        Navigator.pop(context, postResult);
+        Navigator.pop(context, updatedCategory);
 
         }
       }
