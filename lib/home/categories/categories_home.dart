@@ -15,10 +15,10 @@ class _CategoriesHomeState extends State<CategoriesHome> {
   Future<List<Category>?>? categoriesFuture;
   List<Category>? categories;
   @override
-  void initState() {
+  void initState(){
     super.initState();
     refreshCategories();
-    categoriesFuture = CategoryApi.getAllCategories();
+    categoriesFuture =  CategoryApi.getAllCategories();
   }
 
     Future<void> refreshCategories() async {
@@ -29,8 +29,9 @@ class _CategoriesHomeState extends State<CategoriesHome> {
   }
 
   Future<void> handleCategoryEdit(Category updatedCategory) async {
-
-    final int updatedIndex = categories!.indexWhere((category) => category.id == updatedCategory.id);
+    final int updatedIndex = 
+    categories!.indexWhere((category) => 
+    category.id == updatedCategory.id);
 
     if (updatedIndex != -1) {
       setState(() {

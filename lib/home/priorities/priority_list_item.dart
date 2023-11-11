@@ -7,8 +7,9 @@ import 'package:flutter_todo_app/models/priority.dart';
 
 class PriorityListItem extends StatefulWidget{
   final Priority priority;
+  final Function(Priority) onPriorityUpdate;
 
-  const PriorityListItem({super.key, required this.priority});
+  const PriorityListItem({super.key, required this.priority, required this.onPriorityUpdate});
   
   @override
   State<StatefulWidget> createState() => _PriorityListItemState();
@@ -24,7 +25,7 @@ class _PriorityListItemState extends State<PriorityListItem>{
         Navigator.push(context, MaterialPageRoute(
           builder: (context){
             return EditPriorityPage(priority: widget.priority);
-          }));;
+          })).then((value) => {widget.onPriorityUpdate(value)});
       },
       trailing: IconButton(
         icon: const Icon(Icons.delete),

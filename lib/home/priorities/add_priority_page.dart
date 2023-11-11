@@ -19,33 +19,31 @@ class _AddPriorityPageState extends State<AddPriorityPage>{
   final priorityNameController = TextEditingController();
   final prioritySortController = TextEditingController();
 
-  Future<bool> handleDataAdd() async{
+  Future<Priority?> handleDataAdd() async{
     Priority priority = Priority(
       id: const Uuid().v4(),
       priorityName: priorityNameController.text,
       prioritySort: int.parse(prioritySortController.text)
     );
     var result = await PriorityApi.addPriority(priority);
-    if(result == 201){return true;}
-    else{return false;}
+    if(result == 201){return priority;}
+    else{return null;}
   }
 
   Future<void> handleAddPriorityPress() async{
     if(_formKey.currentState!.validate()){
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
-      );
-      var postResult = await handleDataAdd();
+
+      var addedPriority = await handleDataAdd();
       if(context.mounted){
-        if(postResult){
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("New priority added"))
-          );
-          Navigator.pop(context,true); // true indicates to refresh current priority list
-        }else{
+        if(addedPriority == null){
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Error adding new priority"))
           );
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("New priority added"))
+          );
+          Navigator.pop(context,addedPriority); 
         }
       }
     }

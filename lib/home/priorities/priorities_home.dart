@@ -14,11 +14,22 @@ class PrioritiesHome extends StatefulWidget{
 }
 class _PrioritiesHomeState extends State<PrioritiesHome>{
   Future<List<Priority>?>? prioritiesFuture;
+  List<Priority>? priorities;
 
   @override
   void initState(){
     super.initState();
+
+    refreshPriorities();
     prioritiesFuture = PriorityApi.getAllPriorities();
+  }
+
+  Future<void> refreshPriorities()async{
+    final List<Priority>? updatedPriorities 
+    = await PriorityApi.getAllPriorities();
+    setState(() {
+      priorities = updatedPriorities;
+    });
   }
 
   Future<void> handleAddPriorityPress(BuildContext context) async{
@@ -27,13 +38,26 @@ class _PrioritiesHomeState extends State<PrioritiesHome>{
       MaterialPageRoute(
         builder: ((context) => const AddPriorityPage())
       )).then((value){
-        if(value == true){
+        if(value is Priority){
           setState(() {
-            prioritiesFuture = PriorityApi.getAllPriorities();
+            priorities?.insert(0,value);
+            // prioritiesFuture = PriorityApi.getAllPriorities();
           });
         }
       });
   }
+
+  Future<void> handlePriorityEdit(Priority updatedPriority) async{
+    final int updatedIndex = priorities!.indexWhere((priority) => 
+    priority.id == updatedPriority.id);
+
+    if (updatedIndex != -1){
+      setState((){
+        priorities![updatedIndex] = updatedPriority;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,10 +95,11 @@ class _PrioritiesHomeState extends State<PrioritiesHome>{
               } else {
                 return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.data!.length,
+                  // itemCount: snapshot.data!.length,
+                  itemCount: priorities!.length,
                   itemBuilder: (context, index) {
-                    Priority priority = snapshot.data![index];
-                    return PriorityListItem(priority: priority);
+                    Priority priority = priorities![index];
+                    return PriorityListItem(priority: priority, onPriorityUpdate: handlePriorityEdit);
                   },
                 );
               }
