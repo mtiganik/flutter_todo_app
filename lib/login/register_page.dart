@@ -10,10 +10,8 @@ import 'package:flutter_todo_app/login/name_input.dart';
 import 'package:flutter_todo_app/login/page_navigation.dart';
 import 'package:flutter_todo_app/login/password_confirm_password.dart';
 import 'package:flutter_todo_app/models/user.dart';
-import 'package:flutter_todo_app/services/user_service.dart';
 import 'package:flutter_todo_app/state_mgmt/auth_model.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatelessWidget{
   const RegisterPage({super.key});

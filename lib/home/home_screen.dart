@@ -8,7 +8,6 @@ import 'package:flutter_todo_app/db/database_helper.dart';
 import 'package:flutter_todo_app/db/initial_db_values.dart';
 import 'package:flutter_todo_app/home/categories/categories_home.dart';
 import 'package:flutter_todo_app/home/priorities/priorities_home.dart';
-import 'package:flutter_todo_app/home/task_list.dart';
 import 'package:flutter_todo_app/home/tasks/tasks_home.dart';
 import 'package:flutter_todo_app/services/category_service.dart';
 import 'package:flutter_todo_app/services/task_service.dart';
