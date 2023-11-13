@@ -5,6 +5,7 @@ import 'package:flutter_todo_app/api/api_methods/category_api.dart';
 import 'package:flutter_todo_app/api/api_methods/priority_api.dart';
 import 'package:flutter_todo_app/api/api_methods/task_api.dart';
 import 'package:flutter_todo_app/home/tasks/task_list_item.dart';
+import 'package:flutter_todo_app/home/utils/popup_menu.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/task.dart';
@@ -51,7 +52,18 @@ class _TasksHomeState extends State<TasksHome>{
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Task>?>(
+    return 
+    Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const Text("Todo app", style:TextStyle(color: Colors.white)),
+          actions: const [
+  PopupMenu()
+          ],
+  ),
+      body: SingleChildScrollView(
+        child: 
+    FutureBuilder<List<Task>?>(
       future: tasksFuture,
       builder: (context, snapshot){
         if(snapshot.connectionState == ConnectionState.waiting){
@@ -78,7 +90,8 @@ class _TasksHomeState extends State<TasksHome>{
             });
         }
       }
-    );
-  }
+    )
+  
+));}
 
 }
