@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_todo_app/api/shared_preferences_config.dart';
 import 'package:flutter_todo_app/debug/debug_auth_page.dart';
 import 'package:flutter_todo_app/login/login_button.dart';
 import 'package:flutter_todo_app/login/login_header.dart';
@@ -69,14 +70,34 @@ void handlePasswordChange(String newPassword){
   });
 }
 
-void handleLoginPressed (AuthModel model)async{
-  // AuthModel authmodel = new ;
-  // Provider.of<AuthModel>(context, listen: false);
+void handleLoginPressed (AuthModel authModel)async{
+  final url = Uri.parse("https://taltech.akaver.com/api/v1/Account/Login");
+  
+  final response = await http.post(
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode({
+      "email": email,
+      "password": password,
+    }),
+  );
 
-  model.setIsUserLoggedIn(true);
-  //User user = await loginUser(email = "aaa@bbb.eeq", password="q1w2E+");
-  print("Pressed login");
-  // print(user.token);
+  if (response.statusCode == 200) {
+    var user = User.fromJson(json.decode(response.body), response.statusCode, "Login successful");
+    await SharedPreferencesConfig().updateTokenRefreshToken(user);
+    authModel.setIsUserLoggedIn(true);
+
+    if(context.mounted){
+      ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Login success')));
+    }
+  } else {
+    // Request failed
+    print("Login failed: ${response.reasonPhrase}");
+    throw Exception('Failed to login');
+  }
 }
 
   @override
@@ -115,32 +136,34 @@ void handleLoginPressed (AuthModel model)async{
 
 
 
-Future<User> loginUser(String email, String password) async {
-  final url = Uri.parse("https://taltech.akaver.com/api/v1/Account/Login");
+// Future<User> loginUser(String email, String password) async {
+//   final url = Uri.parse("https://taltech.akaver.com/api/v1/Account/Login");
   
-  final response = await http.post(
-    url,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode({
-      "email": email,
-      "password": password,
-    }),
-  );
+//   final response = await http.post(
+//     url,
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: jsonEncode({
+//       "email": email,
+//       "password": password,
+//     }),
+//   );
 
-  if (response.statusCode == 200) {
-    // Request was successful
-    // final responseData = jsonDecode(response.body);
-    // print("Login successful: $responseData");
-    var user = User.fromJson(json.decode(response.body), response.statusCode, "Login successful");
-    return user;
-  } else {
-    // Request failed
-    print("Login failed: ${response.reasonPhrase}");
-    throw Exception('Failed to login');
-  }
-}
+//   if (response.statusCode == 200) {
+//     // Request was successful
+//     // final responseData = jsonDecode(response.body);
+//     // print("Login successful: $responseData");
+//     var user = User.fromJson(json.decode(response.body), response.statusCode, "Login successful");
+    
+    
+//     return user;
+//   } else {
+//     // Request failed
+//     print("Login failed: ${response.reasonPhrase}");
+//     throw Exception('Failed to login');
+//   }
+// }
 
 
 

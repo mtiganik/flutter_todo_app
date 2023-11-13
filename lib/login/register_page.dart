@@ -100,8 +100,8 @@ class _RegisterPageBoxState extends State<RegisterPageBox>{
         isLoading = true;
         registerError = "";
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Processing Data')));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      // const SnackBar(content: Text('Processing Data')));
 
       User user = await registerUserApi(
           email: email,
