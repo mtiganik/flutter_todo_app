@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/home/home_screen.dart';
+import 'package:flutter_todo_app/debug/AppBar4.dart';
+import 'package:flutter_todo_app/home/tasks_home.dart';
 import 'package:flutter_todo_app/login/login_page.dart';
-import 'package:flutter_todo_app/login/register_page.dart';
 import 'package:flutter_todo_app/state_mgmt/auth_model.dart';
 import 'package:provider/provider.dart';
 
@@ -26,12 +26,12 @@ class MainApp extends StatelessWidget {
                     return const CircularProgressIndicator();
                   } else {
                     return authModel.isUserLoggedIn()
-                        ? const HomeScreen()
+                        ? const TasksHome()
                         : const LoginPage();
                   }
                 }
               ),
-              '/main' : (context) => const HomeScreen(),
+              '/main' : (context) => const TasksHome(),
 
               // '/main' : (context) => Consumer<AuthModel>(
               //   builder: (context, authModel, child){
