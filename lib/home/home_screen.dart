@@ -21,11 +21,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomeScreen extends StatelessWidget{
   const HomeScreen({super.key});
 
-  Future<void> handleLogout(AuthModel authModel) async{
-    await SharedPreferencesConfig().removeSharedPrefs();
-    authModel.setIsUserLoggedIn(false);
-  }
-
   
   @override
   Widget build(BuildContext context) {
@@ -38,26 +33,16 @@ class HomeScreen extends StatelessWidget{
   PopupMenu()
           ],
   ),
-      body:Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: ((context) => const CategoriesHome()))); }, child: const Text("Categories")),
-              ElevatedButton(onPressed: (){Navigator.push(context,MaterialPageRoute(builder: ((context) => const PrioritiesHome()))); }, child: const Text("Priorities")),
-                Consumer<AuthModel>(builder: (context, authModel, child) {
-                  return ElevatedButton(
-                      onPressed: () => handleLogout(authModel),
-                      child: const Text("Logout"));
-                }
-        )
-            ],
-          ),
-          const TasksHome(),
+      body:const SingleChildScrollView(
+        child: 
+        
+       Column(
+         children: [
+          TasksHome()
 
         ],
       )
-    );
+    ));
 
   }
 

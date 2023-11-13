@@ -66,6 +66,7 @@ class _TasksHomeState extends State<TasksHome>{
           return ListView.builder(
             shrinkWrap: true,
             itemCount: tasks?.length ?? 0,
+            physics:const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index){
               Task? task = tasks?[index];
               Category? category = getCategoryById(task?.todoCategoryId);
