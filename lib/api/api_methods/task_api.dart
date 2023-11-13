@@ -34,6 +34,7 @@ class TaskApi{
       });
     await const LogoutHandle().handle401Status(response.statusCode);
     if(response.statusCode == 200){
+      print(response.body);
       final List<dynamic> data = jsonDecode(response.body);
       final tasks = data.map((task) 
       => Task.fromJson(task)).toList();

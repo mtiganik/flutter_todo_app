@@ -33,8 +33,8 @@ class Task{
       taskSort: json['taskSort'],
       createdDt: json['createdDt'],
       dueDt: json['dueDt'],
-      isCompleted: json['isCompleted'] == 0 ? false: true,
-      isArchived: json['isArchived'] == 0 ? false: true,
+      isCompleted: json['isCompleted'] == true || json['isCompleted'] == 1,
+      isArchived: json['isArchived'] == true || json['isArchived'] == 1,
       todoCategoryId: json['todoCategoryId'],
       todoPriorityId: json['todoPriorityId'],
       syncDt: json['syncDt']
@@ -58,6 +58,6 @@ class Task{
 
   @override
   String toString() {
-    return 'Task: {id: $id, taskname: $taskName, categoryId: $todoCategoryId, priorityId: $todoPriorityId}, dueDt: $dueDt}';
+    return 'Task: { task: $taskName, isCompleted: $isCompleted, dueDt: $dueDt}';
   }
 }
