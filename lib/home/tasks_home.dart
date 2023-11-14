@@ -7,6 +7,7 @@ import 'package:flutter_todo_app/api/api_methods/task_api.dart';
 import 'package:flutter_todo_app/home/tasks/add_task_page.dart';
 import 'package:flutter_todo_app/home/tasks/task_list_item.dart';
 import 'package:flutter_todo_app/home/utils/popup_menu.dart';
+import 'package:flutter_todo_app/home/utils/sort_tasks_by_priority.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/task.dart';
@@ -30,12 +31,18 @@ class _TasksHomeState extends State<TasksHome>{
   List<Priority>? priorities;
   List<Category>? categories;
   int? initialDoneNotDoneToggleSwitch;
+  int? initialSortToggleSwitch;
+  bool categorySortAscending = false;
+  bool prioritySortAscending = false;
+  bool dueDateSortAscending = false;
+
   @override
   void initState(){
     super.initState();
     initializeInMemoryElements();
     tasksFuture =TaskApi.getAllTasks();
     initialDoneNotDoneToggleSwitch = 0;
+    initialSortToggleSwitch = 1;
   }
   Future<void> initializeInMemoryElements() async{
     final List<Task>? updatedTasks = await TaskApi.getAllTasks();
@@ -43,9 +50,10 @@ class _TasksHomeState extends State<TasksHome>{
     final List<Category>? updatedCategories = await CategoryApi.getAllCategories();
     setState((){
       priorities = updatedPriorities;
-      displayTasks = updatedTasks;
       allTasks = updatedTasks;
       categories = updatedCategories;
+      displayTasks = sortTasksByPriority(allTasks, priorities, prioritySortAscending);
+      prioritySortAscending = !prioritySortAscending;
     });
   }
   Future<void> handleAddTaskPress(BuildContext context)async{
@@ -80,6 +88,27 @@ class _TasksHomeState extends State<TasksHome>{
     });
   }
 
+  void handleSortToggleSwitch(index){
+    if(displayTasks != null){
+    setState(() {
+      initialSortToggleSwitch = index;
+      if(index == 0 ){
+        displayTasks!.sort((a,b) => categorySortAscending ?
+        a.todoCategoryId.compareTo(b.todoCategoryId)
+        : b.todoCategoryId.compareTo(a.todoCategoryId));
+        categorySortAscending = !categorySortAscending;
+      }else if(index == 1){
+        displayTasks = sortTasksByPriority(displayTasks, priorities, prioritySortAscending);
+        prioritySortAscending = !prioritySortAscending;
+      }else if(index == 2){
+        // displayTasks!.sort((a, b) => dueDateSortAscending ?
+        // a.dueDt!.compareTo(b.dueDt)
+        // :b.dueDt!.compareTo(a.dueDt))
+      }
+    });
+    print("Index: $index");
+  }}
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +134,25 @@ Column(children: [
   customWidths: const [90,70,90],
   onToggle: (index) {
     handleDoneNotDoneToggleSwith(index);
-    print("Index");
   },
 ),
 ElevatedButton(onPressed: (){handleAddTaskPress(context);}, child: const Text("Add new"))
   ]),
+  Container(
+    alignment: Alignment.centerLeft,
+    child: 
+  
+    ToggleSwitch(
+  initialLabelIndex: initialSortToggleSwitch,
+  totalSwitches: 3,
+  activeBgColor: const [Colors.blue],
+  labels: const ['By Category', 'By Priority', 'By due date'],
+  customWidths: const [100,100,100],
+  onToggle: (index) {
+    handleSortToggleSwitch(index);
+  },
+),),
+
 
   Expanded(child: 
       SingleChildScrollView(

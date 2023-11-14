@@ -24,7 +24,7 @@ class Task{
     this.taskSort = 0,
   }) : createdDt = createdDt ?? DateTime.now().toIso8601String(),
   syncDt = syncDt ?? DateTime.now().toIso8601String(),
-  dueDt = dueDt ?? DateTime.now().add(Duration(days: 14 + DateTime.now().second % 7)).toIso8601String();
+  dueDt = dueDt ?? DateTime.now().add(Duration(days: 7 + DateTime.now().second % 7)).toIso8601String();
 
   factory Task.fromJson(Map<String, dynamic> json){
     return Task(
