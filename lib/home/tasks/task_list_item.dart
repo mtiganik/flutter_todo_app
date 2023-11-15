@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/home/utils/date_parser.dart';
+import 'package:flutter_todo_app/home/tasks/task_list_item_methods.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/task.dart';
@@ -25,19 +26,8 @@ class _TaskListItemState extends State<TaskListItem>{
   Future<void> handleMarkAsDone()async{
     print("On handle mark as done");
   }
-  TextStyle getPriorityStyle(Priority priority){
-    if(priority.prioritySort >= 10) {return const TextStyle(color: Colors.orange, fontWeight: FontWeight.bold);} 
-    else if(priority.prioritySort >= 5){return const TextStyle();}
-    else {return const TextStyle(color: Colors.lightGreen);}
-  } 
 
-  Icon getIconByCategory(Category category){
-    if(category.categoryName == "Home") {return const Icon(Icons.home);}
-    else if(category.categoryName == "Work") {return const Icon(Icons.work);}
-    else if(category.categoryName == "School") {return const Icon(Icons.school);}
-    else if(category.categoryName == "Other") {return const Icon(Icons.other_houses);}
-    else {return const Icon(Icons.question_mark);}
-  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -45,10 +35,12 @@ class _TaskListItemState extends State<TaskListItem>{
       leading: getIconByCategory(widget.taskCategory),
       subtitle: Text.rich(
         TextSpan(
-          children: <TextSpan>[
+          children: [
             TextSpan(text: "${previousTimeToString(widget.task.createdDt)}, "),
             TextSpan(text: "${widget.taskPriority.priorityName}\n", style: getPriorityStyle(widget.taskPriority)),
-            TextSpan(text: "Due: ${futureTimeToString(widget.task.dueDt)}"),
+            TextSpan(text: "Due: ${futureTimeToString(widget.task.dueDt)}\n"),
+            TextSpan(text: "${widget.taskCategory.categoryName} category,"),
+            getIsTaskDoneTextSpan(widget.task.isCompleted)
           ]
         )
       ),
