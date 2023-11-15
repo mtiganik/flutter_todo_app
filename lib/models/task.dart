@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 class Task{
   final String id;
   final String taskName;
@@ -24,7 +26,14 @@ class Task{
     this.taskSort = 0,
   }) : createdDt = createdDt ?? DateTime.now().toIso8601String(),
   syncDt = syncDt ?? DateTime.now().toIso8601String(),
-  dueDt = dueDt ?? DateTime.now().add(Duration(days: 7 + DateTime.now().second % 7)).toIso8601String();
+  dueDt = dueDt ?? _generateRandomDueDate();
+
+  static String _generateRandomDueDate(){
+    final Random random = Random();
+    final int randomDays = random.nextInt(21) +1;
+    final DateTime randomDate = DateTime.now().add(Duration(days: randomDays));
+    return randomDate.toIso8601String();
+  }
 
   factory Task.fromJson(Map<String, dynamic> json){
     return Task(

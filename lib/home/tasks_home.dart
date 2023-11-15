@@ -101,9 +101,15 @@ class _TasksHomeState extends State<TasksHome>{
         displayTasks = sortTasksByPriority(displayTasks, priorities, prioritySortAscending);
         prioritySortAscending = !prioritySortAscending;
       }else if(index == 2){
-        // displayTasks!.sort((a, b) => dueDateSortAscending ?
-        // a.dueDt!.compareTo(b.dueDt)
-        // :b.dueDt!.compareTo(a.dueDt))
+        displayTasks!.sort((a, b) {
+          final DateTime dueDateA = DateTime.parse(a.dueDt!);
+          final DateTime dueDateB = DateTime.parse(b.dueDt!);
+          return dueDateSortAscending
+          ? dueDateA.compareTo(dueDateB)
+          : dueDateB.compareTo(dueDateA);
+        });
+        dueDateSortAscending = !dueDateSortAscending;
+         
       }
     });
     print("Index: $index");
@@ -123,70 +129,81 @@ class _TasksHomeState extends State<TasksHome>{
           ],
   ),
       body: 
-Column(children: [
-  Row(
-    children: [
-  ToggleSwitch(
-  initialLabelIndex: initialDoneNotDoneToggleSwitch,
-  totalSwitches: 3,
-  activeBgColor: const [Colors.blue],
-  labels: const ['All tasks', 'Done', 'Not done'],
-  customWidths: const [90,70,90],
-  onToggle: (index) {
-    handleDoneNotDoneToggleSwith(index);
-  },
-),
-ElevatedButton(onPressed: (){handleAddTaskPress(context);}, child: const Text("Add new"))
-  ]),
-  Container(
-    alignment: Alignment.centerLeft,
-    child: 
-  
-    ToggleSwitch(
-  initialLabelIndex: initialSortToggleSwitch,
-  totalSwitches: 3,
-  activeBgColor: const [Colors.blue],
-  labels: const ['By Category', 'By Priority', 'By due date'],
-  customWidths: const [100,100,100],
-  onToggle: (index) {
-    handleSortToggleSwitch(index);
-  },
-),),
-
-
-  Expanded(child: 
-      SingleChildScrollView(
-        child: 
-    FutureBuilder<List<Task>?>(
-      future: tasksFuture,
-      builder: (context, snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return const Center(child: CircularProgressIndicator(),);
-        } else if (snapshot.hasError){
-          return Center(child: Text('Error: ${snapshot.error}'),);
-        } else if(!snapshot.hasData || snapshot.data!.isEmpty){
-          // no data to display
-          return const Center(child: Text('No tasks available.'),);
-        } else{
-          // display data
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: displayTasks?.length ?? 0,
-            physics:const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index){
-              Task? task = displayTasks?[index];
-              Category? category = getCategoryById(task?.todoCategoryId);
-              Priority? priority = getPriorityById(task?.todoPriorityId);
-              return task != null && category != null && priority != null
-              ? TaskListItem(task: task, taskCategory: category, taskPriority: priority)
-              : const SizedBox.shrink();
-              
-            });
-        }
-      }
-    )
-)),
-],)
-);}
-
+      SingleChildScrollView(child: 
+      
+Column(
+          children: [
+            Row(children: [
+              ToggleSwitch(
+                initialLabelIndex: initialDoneNotDoneToggleSwitch,
+                totalSwitches: 3,
+                activeBgColor: const [Colors.blue],
+                labels: const ['All tasks', 'Done', 'Not done'],
+                customWidths: const [90, 70, 90],
+                onToggle: (index) {
+                  handleDoneNotDoneToggleSwith(index);
+                },
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    handleAddTaskPress(context);
+                  },
+                  child: const Text("Add new"))
+            ]),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: ToggleSwitch(
+                initialLabelIndex: initialSortToggleSwitch,
+                totalSwitches: 3,
+                activeBgColor: const [Colors.blue],
+                labels: const ['By Category', 'By Priority', 'By due date'],
+                customWidths: const [100, 100, 100],
+                onToggle: (index) {
+                  handleSortToggleSwitch(index);
+                },
+              ),
+            ),
+          FutureBuilder<List<Task>?>(
+              future: tasksFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  // no data to display
+                  return const Center(
+                    child: Text('No tasks available.'),
+                  );
+                } else {
+                  // display data
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: displayTasks?.length ?? 0,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        Task? task = displayTasks?[index];
+                        Category? category =
+                            getCategoryById(task?.todoCategoryId);
+                        Priority? priority =
+                            getPriorityById(task?.todoPriorityId);
+                        return task != null &&
+                                category != null &&
+                                priority != null
+                            ? TaskListItem(
+                                task: task,
+                                taskCategory: category,
+                                taskPriority: priority)
+                            : const SizedBox.shrink();
+                      });
+                }
+              }),
+        ],
+      )),
+    );
+  }
 }
