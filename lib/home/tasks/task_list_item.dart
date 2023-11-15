@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/api/api_methods/task_api.dart';
 import 'package:flutter_todo_app/home/utils/date_parser.dart';
 import 'package:flutter_todo_app/home/tasks/task_list_item_methods.dart';
 import 'package:flutter_todo_app/models/category.dart';
@@ -13,7 +14,8 @@ class TaskListItem extends StatefulWidget{
   final Task task;
   final Category taskCategory;
   final Priority taskPriority;
-  const TaskListItem({super.key, required this.task, required this.taskCategory, required this.taskPriority});
+  final Function(Task) onUpdate;
+  const TaskListItem({super.key, required this.task, required this.taskCategory, required this.taskPriority, required this.onUpdate});
 
   @override
   State<StatefulWidget> createState() => _TaskListItemState();
@@ -24,13 +26,21 @@ class _TaskListItemState extends State<TaskListItem>{
   MenuItems? selectedMenuItem;
 
   Future<void> handleMarkAsDone()async{
-    print("On handle mark as done");
+     Task updatedTask =  widget.task.copyWith(isCompleted: !widget.task.isCompleted);
+    var result = await TaskApi.updateTask(updatedTask);
+    if (result >= 200 && result < 300){
+      widget.onUpdate(updatedTask);
+    }
   }
 
-
+  void handleLongPress(){
+    print("Long pressed ${widget.task.taskName}");
+  }
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => handleMarkAsDone(),
+      onLongPress: () => handleLongPress(),
       title: Text(widget.task.taskName),
       leading: getIconByCategory(widget.taskCategory),
       subtitle: Text.rich(

@@ -13,6 +13,7 @@ class Task{
   final String todoPriorityId;
   final String? syncDt;
 
+
   Task({
     required this.id,
     required this.taskName,
@@ -64,6 +65,33 @@ class Task{
       'syncDt':syncDt,
     };
   }
+
+  Task copyWith({
+    String? id,
+    String? taskName,
+    int? taskSort,
+    String? createdDt,
+    String? dueDt,
+    bool? isCompleted,
+    bool? isArchived,
+    String? todoCategoryId,
+    String? todoPriorityId,
+    String? syncDt,
+  }){
+    return Task(
+      id: id?? this.id,
+      taskName: taskName ?? this.taskName,
+      taskSort: taskSort ?? this.taskSort,
+      createdDt: createdDt ?? this.createdDt,
+      dueDt: dueDt ?? this.dueDt,
+      isCompleted: isCompleted ?? this.isCompleted,
+      isArchived: isArchived ?? this.isArchived,
+      todoCategoryId: todoCategoryId ?? this.todoCategoryId,
+      todoPriorityId: todoPriorityId ?? this.todoPriorityId,
+      syncDt: syncDt ?? this.syncDt
+    );
+  }
+
 
   @override
   String toString() {

@@ -115,6 +115,16 @@ class _TasksHomeState extends State<TasksHome>{
     print("Index: $index");
   }}
 
+  void updateTask(Task taskToUpdate){
+    setState(() {
+      if(displayTasks != null){
+        displayTasks = displayTasks!.map((task){
+          return task.id == taskToUpdate.id ? taskToUpdate : task;
+        }).toList();
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +207,9 @@ Column(
                             ? TaskListItem(
                                 task: task,
                                 taskCategory: category,
-                                taskPriority: priority)
+                                taskPriority: priority,
+                                onUpdate: updateTask,
+                                )
                             : const SizedBox.shrink();
                       });
                 }
