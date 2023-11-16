@@ -62,9 +62,9 @@ class _TaskListItemState extends State<TaskListItem>{
 
         },
         itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItems>>[
-          const PopupMenuItem<MenuItems>(
+           PopupMenuItem<MenuItems>(
             value: MenuItems.markAsDone,
-            child: Text("Mark as done")),
+            child: Text(widget.task.isCompleted ? "Mark as not done":"Mark as done")),
           
           const PopupMenuItem<MenuItems>(
             value: MenuItems.edit,
