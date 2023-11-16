@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/api_methods/category_api.dart';
 import 'package:flutter_todo_app/api/api_methods/priority_api.dart';
+import 'package:flutter_todo_app/api/api_methods/task_api.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/task.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTaskPage extends StatefulWidget{
   const AddTaskPage({super.key});
@@ -29,8 +31,50 @@ class _AddTaskPageState extends State<AddTaskPage>{
     initializeData();
   }
   Future<void> initializeData() async{
-    priorities = await PriorityApi.getAllPriorities();
-    categories = await CategoryApi.getAllCategories();
+    var fetchPriorities = await PriorityApi.getAllPriorities();
+    var fetchCategories = await CategoryApi.getAllCategories();
+    setState(() {
+      categories = fetchCategories;
+      priorities = fetchPriorities;
+    });
+  }
+
+  Future<void> saveTask() async{
+    if(selectedCategory != null && selectedPriority != null){
+      String taskName = taskNameController.text;
+      String dueDt = dueDtController.text;
+      Task newtask = Task(
+        id: const Uuid().v4(),
+        taskName: taskName,
+        isCompleted: false,
+        dueDt: dueDt,
+        todoCategoryId: selectedCategory!.id,
+        todoPriorityId: selectedPriority!.id,
+      );
+      int response = await TaskApi.addTask(newtask);
+      if(context.mounted){
+        if (response >= 200 && response < 300) {
+          ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Task added')));
+          Navigator.pop(context, newtask);
+
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error adding new task')));
+        }
+      }
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async{
+    DateTime? pickedDate = await showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(), 
+      firstDate: DateTime.now().add(const Duration(days: 1)),
+      lastDate: DateTime(DateTime.now().year +5));
+      if(pickedDate != null && pickedDate != DateTime.now()){
+        dueDtController.text = pickedDate.toLocal().toString().split(' ')[0];
+      }
   }
 
   @override
@@ -57,14 +101,41 @@ class _AddTaskPageState extends State<AddTaskPage>{
               ),
               TextFormField(
                 controller: dueDtController,
-                keyboardType: TextInputType.datetime,
+                //keyboardType: TextInputType.datetime,
                 decoration: const InputDecoration(labelText: "Task due date"),
                 validator: (value){
                   if(value == null || value.isEmpty){
                     return 'Please add a date';
                   }return null;
                 },
+                onTap:(){
+                  _selectDate(context);
+                }
               ),
+              ElevatedButton(onPressed: () => _selectDate(context), 
+              child: const Text('Select date')),
+              const SizedBox(height: 16.0),
+              DropdownButtonFormField<Category>(
+                value: selectedCategory,
+                items: categories?.map((category){
+                  return DropdownMenuItem<Category>(
+                    value: category,
+                    child: Text(category.categoryName));
+                }).toList(), 
+                onChanged: (newValue){
+                  setState(() {
+                    selectedCategory = newValue;
+                  });
+                }, decoration: const InputDecoration(labelText: "Select Category", 
+                border:OutlineInputBorder()),
+                validator:(value){
+                  if(value == null){
+                    return 'Please select a category';
+                  }return null;
+                }),
+                const SizedBox(height: 16.0),
+
+
               const SizedBox(height: 16.0),
               DropdownButtonFormField<Priority>(
                 value: selectedPriority,
@@ -84,15 +155,18 @@ class _AddTaskPageState extends State<AddTaskPage>{
                     return 'Please select a priority';
                   }return null;
                 }),
-
-
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: (){
+                    if(_formKey.currentState!.validate()){
+                      saveTask();
+                    }
+                  }, 
+                  child: const Text('Save Task'))
             ],
           )
-
         )
-
     ))
-    
     );
   }
 
