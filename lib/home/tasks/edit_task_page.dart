@@ -73,7 +73,7 @@ Future<void> updateTask() async{
         todoCategoryId: selectedCategory!.id,
         todoPriorityId: selectedPriority!.id,
       );
-      int response = await TaskApi.addTask(newTask);
+      int response = await TaskApi.updateTask(newTask);
       if(context.mounted){
         if (response >= 200 && response < 300) {
           ScaffoldMessenger.of(context).showSnackBar(

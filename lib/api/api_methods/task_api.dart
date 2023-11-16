@@ -46,8 +46,8 @@ class TaskApi{
 
   static Future<int> addTask(Task task) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response = await http.put(
-      Uri.parse("$url/${task.id}"),
+    final response = await http.post(
+      Uri.parse(url),
       headers: {
         "Content-Type": "application/json",
         'Authorization': 'Bearer ${prefs.getString("token")}'

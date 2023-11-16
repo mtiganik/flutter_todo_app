@@ -125,6 +125,14 @@ class _TasksHomeState extends State<TasksHome>{
     });
   }
 
+  void deleteTask(Task taskToDelete){
+    setState(() {
+      if(displayTasks != null){
+        displayTasks!.removeWhere((task) => task.id == taskToDelete.id);
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -209,6 +217,7 @@ Column(
                                 taskCategory: category,
                                 taskPriority: priority,
                                 onUpdate: updateTask,
+                                onDelete: deleteTask,
                                 )
                             : const SizedBox.shrink();
                       });

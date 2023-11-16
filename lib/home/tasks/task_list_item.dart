@@ -16,7 +16,8 @@ class TaskListItem extends StatefulWidget{
   final Category taskCategory;
   final Priority taskPriority;
   final Function(Task) onUpdate;
-  const TaskListItem({super.key, required this.task, required this.taskCategory, required this.taskPriority, required this.onUpdate});
+  final Function(Task) onDelete;
+  const TaskListItem({super.key, required this.task, required this.taskCategory, required this.taskPriority, required this.onUpdate, required this.onDelete});
 
   @override
   State<StatefulWidget> createState() => _TaskListItemState();
@@ -34,6 +35,13 @@ class _TaskListItemState extends State<TaskListItem>{
     }
   }
 
+  Future<void> handleDelete() async{
+    var result = await TaskApi.deleteTask(widget.task);
+    if(result >= 200 && result < 300){
+      widget.onDelete(widget.task);
+    }
+  }
+
   void handleLongPress(){
         Navigator.push(
       context,
@@ -44,9 +52,9 @@ class _TaskListItemState extends State<TaskListItem>{
         widget.onUpdate(value);
       }
     });
-
     print("Long pressed ${widget.task.taskName}");
   }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -69,6 +77,10 @@ class _TaskListItemState extends State<TaskListItem>{
         onSelected: (MenuItems result){
           if(result == MenuItems.markAsDone){
             handleMarkAsDone();
+          }else if(result == MenuItems.edit){
+            handleLongPress();
+          }else if(result == MenuItems.delete){
+            handleDelete();
           }
 
         },

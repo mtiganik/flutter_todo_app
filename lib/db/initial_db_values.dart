@@ -43,7 +43,7 @@ static final _category_4uuid = _uuid.v4();
     Task(id: _uuid.v4(), taskName: "Pet the cat", isCompleted: true, todoCategoryId: _category_1uuid, todoPriorityId: _priority_3uuid),
     Task(id: _uuid.v4(), taskName: "Learn programming", isCompleted: false, todoCategoryId: _category_2uuid, todoPriorityId: _priority_1uuid),
     Task(id: _uuid.v4(), taskName: "Write an essay", isCompleted: false, todoCategoryId: _category_2uuid, todoPriorityId: _priority_2uuid),
-    Task(id: _uuid.v4(), taskName: "Ask questions from teacher", isCompleted: true, todoCategoryId: _category_2uuid, todoPriorityId: _priority_2uuid),
+    Task(id: _uuid.v4(), taskName: "Ask questions from mr Kever", isCompleted: true, todoCategoryId: _category_2uuid, todoPriorityId: _priority_2uuid),
     Task(id: _uuid.v4(), taskName: "Help other", isCompleted: false, todoCategoryId: _category_2uuid, todoPriorityId: _priority_3uuid),
     Task(id: _uuid.v4(), taskName: "Go to gym", isCompleted: false, todoCategoryId: _category_4uuid, todoPriorityId: _priority_2uuid),
   ];
