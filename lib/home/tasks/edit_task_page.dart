@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/api_methods/category_api.dart';
 import 'package:flutter_todo_app/api/api_methods/priority_api.dart';
@@ -6,59 +7,78 @@ import 'package:flutter_todo_app/api/api_methods/task_api.dart';
 import 'package:flutter_todo_app/models/category.dart';
 import 'package:flutter_todo_app/models/priority.dart';
 import 'package:flutter_todo_app/models/task.dart';
-import 'package:uuid/uuid.dart';
 
-class AddTaskPage extends StatefulWidget{
-  const AddTaskPage({super.key});
+class EditTaskPage extends StatefulWidget{
+  final Task task;
+  final Category prevCategory;
+  final Priority prevPriority;
+  const EditTaskPage({super.key, required this.task, required this.prevCategory, required this.prevPriority});
 
   @override
-  State<StatefulWidget> createState() => _AddTaskPageState();
-
+  State<StatefulWidget> createState() => _EditTaskPageState();
+  
 }
 
-class _AddTaskPageState extends State<AddTaskPage>{
+class _EditTaskPageState extends State<EditTaskPage>{
   final _formKey = GlobalKey<FormState>();
   final taskNameController = TextEditingController();
   final dueDtController = TextEditingController();
-  
+
   DateTime selectedDate = DateTime.now();
 
   Category? selectedCategory;
   Priority? selectedPriority;
   List<Category>? categories;
   List<Priority>? priorities;
+
   @override
   void initState(){
     super.initState();
+    selectedCategory = widget.prevCategory;
+    selectedPriority = widget.prevPriority;
+    taskNameController.text = widget.task.taskName;
+    dueDtController.text = widget.task.dueDt!;
     initializeData();
   }
+
   Future<void> initializeData() async{
     var fetchPriorities = await PriorityApi.getAllPriorities();
     var fetchCategories = await CategoryApi.getAllCategories();
     setState(() {
       categories = fetchCategories;
+      categories?.insert(0,selectedCategory!);
       priorities = fetchPriorities;
+      priorities?.insert(0, selectedPriority!);
     });
   }
 
-  Future<void> saveTask() async{
+  Future<void> _selectDateMyWay(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+    );
+    if (pickedDate != null && pickedDate != DateTime.now()) {
+      dueDtController.text = pickedDate.toLocal().toString().split(' ')[0];
+    }
+  }
+Future<void> updateTask() async{
     if(selectedCategory != null && selectedPriority != null){
       String taskName = taskNameController.text;
       String dueDt = dueDtController.text;
-      Task newtask = Task(
-        id: const Uuid().v4(),
+      Task newTask = widget.task.copyWith(
         taskName: taskName,
-        isCompleted: false,
         dueDt: dueDt,
         todoCategoryId: selectedCategory!.id,
         todoPriorityId: selectedPriority!.id,
       );
-      int response = await TaskApi.addTask(newtask);
+      int response = await TaskApi.addTask(newTask);
       if(context.mounted){
         if (response >= 200 && response < 300) {
           ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Task added')));
-          Navigator.pop(context, newtask);
+          const SnackBar(content: Text('Task updated')));
+          Navigator.pop(context, newTask);
 
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -66,25 +86,12 @@ class _AddTaskPageState extends State<AddTaskPage>{
         }
       }
     }
-  }
-
-  Future<void> _selectDateMyWay(BuildContext context) async{
-    final DateTime? pickedDate = await showDatePicker(
-      context: context, 
-      initialDate: DateTime.now(), 
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2030),
-      );
-      if(pickedDate != null && pickedDate != DateTime.now()){
-        dueDtController.text = pickedDate.toLocal().toString().split(' ')[0];
-      }
-  }
-
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
-      title: const Text("Add Task", style: TextStyle(color: Colors.white)),
+      title: Text("Edit ${widget.task.taskName}", style: const TextStyle(color: Colors.white)),
       backgroundColor: Colors.blue,
     ),body:
      SingleChildScrollView(
@@ -163,10 +170,10 @@ class _AddTaskPageState extends State<AddTaskPage>{
                 ElevatedButton(
                   onPressed: (){
                     if(_formKey.currentState!.validate()){
-                      saveTask();
+                      updateTask();
                     }
                   }, 
-                  child: const Text('Save Task'))
+                  child: const Text('Update task'))
             ],
           )
         )
@@ -182,3 +189,4 @@ void dispose(){
 }
 
 }
+

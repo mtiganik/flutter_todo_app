@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/api/api_methods/task_api.dart';
+import 'package:flutter_todo_app/home/tasks/edit_task_page.dart';
 import 'package:flutter_todo_app/home/utils/date_parser.dart';
 import 'package:flutter_todo_app/home/tasks/task_list_item_methods.dart';
 import 'package:flutter_todo_app/models/category.dart';
@@ -34,6 +35,16 @@ class _TaskListItemState extends State<TaskListItem>{
   }
 
   void handleLongPress(){
+        Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (((context) =>  EditTaskPage(task: widget.task,prevCategory: widget.taskCategory, prevPriority: widget.taskPriority)))
+    )).then((value){
+      if(value is Task){
+        widget.onUpdate(value);
+      }
+    });
+
     print("Long pressed ${widget.task.taskName}");
   }
   @override
