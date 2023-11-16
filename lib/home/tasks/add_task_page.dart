@@ -21,6 +21,8 @@ class _AddTaskPageState extends State<AddTaskPage>{
   final taskNameController = TextEditingController();
   final dueDtController = TextEditingController();
   
+  DateTime selectedDate = DateTime.now();
+
   Category? selectedCategory;
   Priority? selectedPriority;
   List<Category>? categories;
@@ -66,24 +68,29 @@ class _AddTaskPageState extends State<AddTaskPage>{
     }
   }
 
-  Future<void> _selectDate(BuildContext context) async{
-    DateTime? pickedDate = await showDatePicker(
+  Future<void> _selectDateMyWay(BuildContext context) async{
+    final DateTime? pickedDate = await showDatePicker(
       context: context, 
       initialDate: DateTime.now(), 
-      firstDate: DateTime.now().add(const Duration(days: 1)),
-      lastDate: DateTime(DateTime.now().year +5));
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+      );
       if(pickedDate != null && pickedDate != DateTime.now()){
+        // selectedDate = pickedDate;
         dueDtController.text = pickedDate.toLocal().toString().split(' ')[0];
       }
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
       title: const Text("Add Task", style: TextStyle(color: Colors.white)),
       backgroundColor: Colors.blue,
-    ),body: SingleChildScrollView(
-      child:Padding(
+    ),body:
+     SingleChildScrollView(
+      child:
+      Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -101,7 +108,7 @@ class _AddTaskPageState extends State<AddTaskPage>{
               ),
               TextFormField(
                 controller: dueDtController,
-                //keyboardType: TextInputType.datetime,
+                keyboardType: TextInputType.none,
                 decoration: const InputDecoration(labelText: "Task due date"),
                 validator: (value){
                   if(value == null || value.isEmpty){
@@ -109,11 +116,9 @@ class _AddTaskPageState extends State<AddTaskPage>{
                   }return null;
                 },
                 onTap:(){
-                  _selectDate(context);
+                  _selectDateMyWay(context);
                 }
               ),
-              ElevatedButton(onPressed: () => _selectDate(context), 
-              child: const Text('Select date')),
               const SizedBox(height: 16.0),
               DropdownButtonFormField<Category>(
                 value: selectedCategory,
@@ -166,8 +171,8 @@ class _AddTaskPageState extends State<AddTaskPage>{
             ],
           )
         )
-    ))
-    );
+    )
+    ));
   }
 
 @override
